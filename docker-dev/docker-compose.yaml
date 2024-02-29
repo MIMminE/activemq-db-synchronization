@@ -1,0 +1,30 @@
+version: "3"
+services:
+  db1:
+    image: mariadb
+    container_name: db1
+    ports:
+      - "4001:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=anyclick_nac
+    restart: always
+
+  db2:
+    image: mariadb
+    container_name: db2
+    ports:
+      - "4002:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=anyclick_nac
+    restart: always
+
+  activeMQ:
+    image: apache/activemq-artemis
+    container_name: activemq
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+
+    restart: always
