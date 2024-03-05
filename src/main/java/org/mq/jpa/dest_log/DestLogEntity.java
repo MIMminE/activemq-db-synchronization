@@ -1,17 +1,15 @@
-package org.mq.jpa;
+package org.mq.jpa.dest_log;
 
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.domain.AbstractAggregateRoot;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
+@Data
 @Entity
-@Table(name="authlog")
-@NoArgsConstructor
-@Setter
-public class AuthlogEntity extends AbstractAggregateRoot {
+@Table(name = "logtable")
+public class DestLogEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,5 +43,4 @@ public class AuthlogEntity extends AbstractAggregateRoot {
 
     @Column(name = "fail_code", length = 8)
     private String failCode;
-
 }

@@ -1,6 +1,8 @@
 package org.mq.jpa;
 
 import org.junit.jupiter.api.Test;
+import org.mq.jpa.source_log.SourceLogEntity;
+import org.mq.jpa.source_log.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -10,12 +12,12 @@ import java.util.Date;
 class repoTest {
 
     @Autowired
-    private repo repository;
+    private SourceRepository repository;
 
     @Test
     public void testInsert() {
         // 테스트 데이터 생성
-        AuthlogEntity entity = new AuthlogEntity();
+        SourceLogEntity entity = new SourceLogEntity();
         entity.setHostname("testHost");
         entity.setUserName("testUser");
         entity.setTimestamp(new Date());

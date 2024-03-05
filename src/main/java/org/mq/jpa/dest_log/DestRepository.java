@@ -1,9 +1,8 @@
-package org.mq.jpa;
+package org.mq.jpa.dest_log;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface repo extends CrudRepository<AuthlogEntity, Long> {
-
+public interface DestRepository extends CrudRepository<DestLogEntity, Long> {
 }
