@@ -1,17 +1,15 @@
-package org.mq.jpa.source_log;
+package org.mq.jpa.consumer;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table(name="authlog")
-@NoArgsConstructor
 @Data
-public class SourceLogEntity implements Serializable {
+@Entity
+@Table(name = "logtable")
+public class ConsumerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,7 +43,4 @@ public class SourceLogEntity implements Serializable {
 
     @Column(name = "fail_code", length = 8)
     private String failCode;
-
-    @Column(name = "sync_flag")
-    private Boolean syncFlag;
 }

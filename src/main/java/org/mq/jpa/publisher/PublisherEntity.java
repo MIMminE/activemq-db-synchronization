@@ -1,15 +1,18 @@
-package org.mq.jpa.dest_log;
+package org.mq.jpa.publisher;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 
-@Data
 @Entity
-@Table(name = "logtable")
-public class DestLogEntity implements Serializable {
+@Table(name="authlog")
+@NoArgsConstructor
+@Data
+public class PublisherEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,4 +46,7 @@ public class DestLogEntity implements Serializable {
 
     @Column(name = "fail_code", length = 8)
     private String failCode;
+
+    @Column(name = "sync_flag")
+    private Boolean syncFlag;
 }

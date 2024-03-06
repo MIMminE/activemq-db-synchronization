@@ -1,6 +1,8 @@
 package org.mq.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mq.thread.PublisherThread;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,10 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class Pub {
+@Slf4j
+public class PublisherService {
 
-    private final ServiceTesting service;
+    private final PublisherThread service;
 
     @Value("${spring.task.execution.pool.core-size}")
     private int taskSize;
@@ -24,13 +27,12 @@ public class Pub {
 
     Map<String, List<Integer>> assignThread = new HashMap<>();
 
-    @Scheduled(fixedRate = 200)
+    @Scheduled(fixedRateString = "${env.publisher.interval-millis}")
     public void run() throws InterruptedException {
-
         assignThreadInit();
 
         for (String key : assignThread.keySet()) {
-            service.update(assignThread.get(key));
+            service.publish(assignThread.get(key));
         }
     }
 

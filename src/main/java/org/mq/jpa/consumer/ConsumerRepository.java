@@ -1,8 +1,8 @@
-package org.mq.jpa.dest_log;
+package org.mq.jpa.consumer;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DestRepository extends CrudRepository<DestLogEntity, Long> {
+public interface ConsumerRepository extends CrudRepository<ConsumerEntity, Long> {
 }
