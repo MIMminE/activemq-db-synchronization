@@ -24,6 +24,7 @@ public class ConsumerService {
     @JmsListener(destination = "${env.message-topic-name}")
     public void receive(PublisherEntity message) throws InterruptedException {
         ConsumerEntity destLogEntity = modelMapper.map(message, ConsumerEntity.class);
+        destLogEntity.setId(null);
         log.debug("Consume [ {} ] -> {}", env.getProperty("env.message-topic-name"),destLogEntity);
         destRepository.save(destLogEntity);
     }

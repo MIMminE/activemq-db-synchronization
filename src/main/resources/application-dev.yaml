@@ -16,8 +16,16 @@ spring:
   task:
     execution:
       pool:
-        core-size: 10
+        core-size: 2
       thread-name-prefix: TASK-
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
 logging:
   level:

@@ -26,5 +26,4 @@ services:
     ports:
       - "8161:8161"
       - "61616:61616"
-
     restart: always
