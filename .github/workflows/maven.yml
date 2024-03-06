@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: application_1
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
