@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.Date;
 
 @Entity

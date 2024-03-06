@@ -13,9 +13,6 @@ spring:
 
   jms:
     pub-sub-domain: true
-  jpa:
-    show-sql: true
-
   task:
     execution:
       pool:
@@ -25,8 +22,7 @@ spring:
 logging:
   level:
     org:
-      mq: DEBUG
-
+      mq: debug
 
 env:
   publisher:

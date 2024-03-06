@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mq.thread.PublisherThread;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Profile("!application-test.yaml")
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class PublisherService {
 
-    private final PublisherThread service;
+    private final PublisherThread thread;
 
     @Value("${spring.task.execution.pool.core-size}")
     private int taskSize;
@@ -32,7 +34,7 @@ public class PublisherService {
         assignThreadInit();
 
         for (String key : assignThread.keySet()) {
-            service.publish(assignThread.get(key));
+            thread.publish(assignThread.get(key));
         }
     }
 
