@@ -37,4 +37,3 @@ env:
     interval-millis: 10000
 
   message-topic-name: logTopic
-

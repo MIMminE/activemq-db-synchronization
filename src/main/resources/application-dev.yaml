@@ -5,16 +5,10 @@ spring:
     username: root
     password: admin
 
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    generate-ddl: true
-    defer-datasource-initialization: true
-
   sql:
     init:
       mode: always
+      schema-locations: schema.sql
 
   artemis:
     user: artemis
@@ -41,3 +35,16 @@ env:
 
   message-topic-name: logTopic
 
+
+db-sync:
+  jobs:
+    - table-name: authlog
+      thread-size: 3
+      topic-name: topic-${db-sync.jobs[0].table-name}
+      publisher-query: select * from ${db-sync.jobs[0].table-name} where sync_flag = false;
+#      consumer-query: insert into ${db-sync.jobs[0].table-name}-pub values
+
+    - table-name: testtbl
+      thread-size: 7
+      topic-name: topic-${db-sync.jobs[0].table-name}
+      publisher-query: select * from ${db-sync.jobs[0].table-name} where sync_flag = false;
