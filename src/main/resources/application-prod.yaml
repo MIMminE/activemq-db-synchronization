@@ -1,0 +1,40 @@
+spring:
+
+  datasource:
+    url: jdbc:mariadb://localhost:4001/anyclick_nac
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: admin
+
+  artemis:
+    user: artemis
+    password: artemis
+    broker-url: tcp://localhost:61616
+
+  jms:
+    pub-sub-domain: true
+  task:
+    execution:
+      pool:
+        core-size: 10
+      thread-name-prefix: TASK-
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    org:
+      mq: debug
+
+env:
+  publisher:
+    interval-millis: 10000
+
+  message-topic-name: logTopic
+
