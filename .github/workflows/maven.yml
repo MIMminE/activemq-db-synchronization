@@ -6,15 +6,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      SPRING_PROFILES_ACTIVE: application_1
     steps:
     - uses: actions/checkout@v3
+
+    - name: Build and run Docker Compose
+      run: |
+        docker-compose up --build -d
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
     - name: Build with Maven
-      run: mvn -B package -P dev --file pom.xml
+      run: mvn -B package -P test --file pom.xml

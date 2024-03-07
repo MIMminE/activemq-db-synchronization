@@ -11,8 +11,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+@Profile("!test")
 @Component
-@Profile("!application-test.yaml")
 @RequiredArgsConstructor
 @Slf4j
 public class ConsumerService {

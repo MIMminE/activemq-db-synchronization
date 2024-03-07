@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Profile("!application-test.yaml")
+@Profile("!test")
 @RequiredArgsConstructor
 @Service
 @Slf4j

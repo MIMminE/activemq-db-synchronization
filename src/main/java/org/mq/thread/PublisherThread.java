@@ -12,20 +12,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
-@Profile("!application-test.yaml")
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Profile("!test")
 public class PublisherThread {
 
     private final PublisherRepository repository;
     private final JmsTemplate jmsTemplate;
     private final Environment env;
 
+    ReentrantLock lock;
+
     @Async("applicationTaskExecutor")
     @Transactional
     public void publish(List<Integer> modIndexList) throws InterruptedException {
+
         for (Integer modIndex : modIndexList) {
             List<PublisherEntity> byTargetEntities = repository.findByPublishingTarget(modIndex);
             byTargetEntities.forEach(e -> {
@@ -36,5 +40,4 @@ public class PublisherThread {
             });
         }
     }
-
 }
