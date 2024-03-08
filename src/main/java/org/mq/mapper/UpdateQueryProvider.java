@@ -4,7 +4,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.util.Map;
 
-public class MyUpdateProvider {
+public class UpdateQueryProvider {
     public String updateTable(Map<String, Object> dataList) {
         return new SQL() {{
             UPDATE((String) dataList.get("table_name"));

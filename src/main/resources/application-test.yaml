@@ -18,22 +18,30 @@ spring:
       pool:
         core-size: 10
       thread-name-prefix: TASK-
-  jpa:
-#    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
   sql:
     init:
       mode: always
+      schema-locations: schema.sql
 
 logging:
   level:
     org:
       mq: debug
 
-env:
-  publisher:
-    interval-millis: 10000
+db-sync:
+  jobs:
+    - table_name: authlog
+      thread_size: 3
+      topic_name: topic-${db-sync.jobs[0].table-name}
+      interval_millis: 3000
 
-  message-topic-name: logTopic
+    - table_name: testtbl
+      thread_size: 5
+      topic_name: topic-${db-sync.jobs[0].table-name}
+      interval_millis: 6000
+
+
+#    - table-name: welcometbl
+#      thread-size: 10
+#      topic-name: null
+#      interval-millis: 1000

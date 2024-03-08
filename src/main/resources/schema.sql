@@ -23,6 +23,7 @@ create table testtbl
     id        bigint auto_increment
         primary key,
     name      varchar(32) not null,
+    time_stamp datetime(6) not null,
     age       int         not null,
     sync_flag bit default false
 )

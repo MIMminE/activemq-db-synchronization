@@ -5,6 +5,8 @@ spring:
     username: root
     password: admin
 
+    hikari:
+      maximum-pool-size: 20
   sql:
     init:
       mode: always
@@ -27,7 +29,7 @@ spring:
 logging:
   level:
     org:
-      mq: debug
+      mq: info
 
 env:
   publisher:
@@ -38,13 +40,19 @@ env:
 
 db-sync:
   jobs:
-    - table-name: authlog
-      thread-size: 3
-      topic-name: topic-${db-sync.jobs[0].table-name}
-      publisher-query: select * from ${db-sync.jobs[0].table-name} where sync_flag = false;
-#      consumer-query: insert into ${db-sync.jobs[0].table-name}-pub values
-
-    - table-name: testtbl
-      thread-size: 7
-      topic-name: topic-${db-sync.jobs[0].table-name}
-      publisher-query: select * from ${db-sync.jobs[0].table-name} where sync_flag = false;
+    - table_name: authlog
+      thread_size: 1
+      topic_name: sampleTopic
+      interval_millis: 500
+#      time_field_name:
+#
+#    - table_name: testtbl
+#      thread_size: 1
+#      topic_name: topic-${db-sync.jobs[0].table-name}
+#      interval_millis: 500
+#
+#    - table_name: authlog
+#      thread_size: 1
+#      topic_name: topic-${db-sync.jobs[0].table-name}
+#      interval_millis: 500
+#

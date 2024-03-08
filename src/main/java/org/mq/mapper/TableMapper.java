@@ -6,11 +6,10 @@ import java.util.Map;
 
 @Mapper
 public interface TableMapper {
+    @Select("SELECT * FROM ${tableName} where mod(second(time_stamp),10)  = ${modIndex} and sync_flag = false")
+    List<Map<String, Object>> selectTable(@Param("tableName") String tableName, @Param("modIndex") int modIndex);
 
-    @Select("SELECT * FROM ${tableName}")
-    List<Map<String, Object>> selectTable(@Param("tableName") String tableName);
-
-    @UpdateProvider(type = MyUpdateProvider.class, method = "updateTable")
+    @UpdateProvider(type = UpdateQueryProvider.class, method = "updateTable")
     void updateTable(Map<String, Object> dataList);
 
 }
