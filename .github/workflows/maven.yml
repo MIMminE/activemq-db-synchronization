@@ -4,7 +4,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -22,3 +22,16 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package -P test --file pom.xml
+
+    - name: Deploy to AWS
+      uses: ssh-actions/ssh-deploy@v1
+      with:
+        ssh_key: ${{ secrets.AWS_PRIVATE_KEY}}
+        host: ${{ secrets.AWS_HOST }}
+        user: ${{ secrets.AWS_USER_NAME }}
+        port: ${{ secrets.AWS_PORT }}
+        target_directory: ~/test_app
+        source_directory: target/MQ-0.0.1-SNAPSHOT.jar
+
+
+

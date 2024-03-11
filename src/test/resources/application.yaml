@@ -4,10 +4,7 @@ spring:
 
   datasource:
     generate-unique-name: false
-  #    url: jdbc:mariadb://localhost:4001/anyclick_nac
-  #    driver-class-name: org.mariadb.jdbc.Driver
-  #    username: root
-  #    password: admin
+    # H2 임베디드 데이터베이스 사용
 
   artemis:
     user: artemis
