@@ -28,7 +28,7 @@ jobs:
       with:
         key: ${{ secrets.AWS_PRIVATE_KEY}}
         host: ${{ secrets.AWS_HOST }}
-        user: ${{ secrets.AWS_USER_NAME }}
+#        user: ${{ secrets.AWS_USER_NAME }}
         port: ${{ secrets.AWS_PORT }}
         target_directory: ~/test_app
         source_directory: target/MQ-0.0.1-SNAPSHOT.jar
