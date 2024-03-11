@@ -24,7 +24,7 @@ jobs:
       run: mvn -B package -P test --file pom.xml
 
     - name: Deploy to AWS
-      uses: appleboy/scp-action@v1.0.3
+      uses: appleboy/scp-action@v0.1.7
       with:
         key: ${{ secrets.SSH_PRIVATE_KEY}}
         host: ${{ secrets.AWS_HOST }}
