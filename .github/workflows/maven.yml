@@ -24,16 +24,14 @@ jobs:
       run: mvn -B package -P test --file pom.xml
 
     - name: Deploy to AWS
-      uses: appleboy/ssh-action@v1.0.3
+      uses: appleboy/scp-action@v1.0.3
       with:
         key: ${{ secrets.SSH_PRIVATE_KEY}}
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USER_NAME }}
         port: ${{ secrets.AWS_PORT }}
-        script: |
-          hello
-#        target_directory: ~/test_app
-#        source_directory: target/MQ-0.0.1-SNAPSHOT.jar
+        target: ~/test_app
+        source: target/MQ-0.0.1-SNAPSHOT.jar
 
 
 
