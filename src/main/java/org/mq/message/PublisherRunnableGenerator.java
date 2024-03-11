@@ -31,7 +31,7 @@ public class PublisherRunnableGenerator {
                     for (Map<String, Object> row : rows) {
                         row.put("time_stamp", row.get("time_stamp").toString());
                         //TODO : Time_stamp 필드, 테이블별로 지정하기
-                        jmsTemplate.convertAndSend("sampleTopic",row);
+                        jmsTemplate.convertAndSend(job.getTopicName(),row);
                         log.info(row.toString());
                     }
                 }

@@ -6,7 +6,8 @@ spring:
     password: admin
 
     hikari:
-      maximum-pool-size: 20
+      maximum-pool-size: 10
+
   sql:
     init:
       mode: always
@@ -20,40 +21,30 @@ spring:
   jms:
     pub-sub-domain: true
 
-  task:
-    execution:
-      pool:
-        core-size: 10
-      thread-name-prefix: TASK-
-
 logging:
   level:
     org:
-      mq: info
-
-env:
-  publisher:
-    interval-millis: 10000
-
-  message-topic-name: logTopic
-
+      mq: debug
 
 db-sync:
   jobs:
     - table_name: authlog
-      thread_size: 1
-      topic_name: sampleTopic
-      interval_millis: 500
+      thread_size: 10
+      topic_name: test1
+      interval_millis: 10000
 #      time_field_name: //
 #      테이블마다 time_stamp 역할을 수행하는 테이블명이 다르다.
 #
-#    - table_name: testtbl
-#      thread_size: 1
-#      topic_name: topic-${db- sync.jobs[0].table-name}
-#      interval_millis: 500
+    - table_name: testtbl
+      thread_size: 10
+      topic_name: test2
+      interval_millis: 10000
 #
 #    - table_name: authlog
 #      thread_size: 1
 #      topic_name: topic-${db-sync.jobs[0].table-name}
 #      interval_millis: 500
 #
+jobs:
+  - topic: test1
+  - topic: test2

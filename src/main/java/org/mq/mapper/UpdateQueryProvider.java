@@ -4,6 +4,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.util.Map;
 
+//TODO XML 파일로 이관
 public class UpdateQueryProvider {
     public String updateTable(Map<String, Object> dataList) {
         return new SQL() {{
