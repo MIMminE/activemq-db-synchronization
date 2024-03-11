@@ -30,6 +30,7 @@ public class PublisherRunnableGenerator {
                     List<Map<String, Object>> rows = mapper.selectTable(job.getTableName(), modIndex);
                     for (Map<String, Object> row : rows) {
                         row.put("time_stamp", row.get("time_stamp").toString());
+                        //TODO : Time_stamp 필드, 테이블별로 지정하기
                         jmsTemplate.convertAndSend("sampleTopic",row);
                         log.info(row.toString());
                     }
