@@ -21,6 +21,7 @@ spring:
   jms:
     pub-sub-domain: true
 
+
 logging:
   level:
     org:

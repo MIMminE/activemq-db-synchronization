@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mq.mapper.TableMapper;
 import org.mq.scheduler.JobProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @AllArgsConstructor
+@Profile("!test")
 public class PublisherRunnableGenerator {
     private TableMapper mapper;
     private JmsTemplate jmsTemplate;

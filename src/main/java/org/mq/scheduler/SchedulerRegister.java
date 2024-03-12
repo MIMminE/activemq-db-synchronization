@@ -6,6 +6,7 @@ import org.mq.message.PublisherRunnableGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.boot.task.ThreadPoolTaskSchedulerBuilder;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class SchedulerRegister implements CommandLineRunner {
     private final ThreadPoolTaskSchedulerBuilder schedulerBuilder;
     private final ThreadPoolTaskExecutorBuilder executorBuilder;
