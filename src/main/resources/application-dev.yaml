@@ -22,10 +22,9 @@ spring:
     pub-sub-domain: true
 
 
-logging:
-  level:
-    org:
-      mq: debug
+#logging:
+#  pattern:
+#    console: "%d{HH:mm:ss.SSS} [%thread] %-5level- %msg%n"
 
 db-sync:
   jobs:
@@ -45,7 +44,3 @@ db-sync:
 #      thread_size: 1
 #      topic_name: topic-${db-sync.jobs[0].table-name}
 #      interval_millis: 500
-#
-jobs:
-  - topic: test1
-  - topic: test2

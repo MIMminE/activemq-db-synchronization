@@ -1,10 +1,9 @@
-package org.mq.message;
+package org.mq.messaging.module.publisher;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mq.mapper.TableMapper;
-import org.mq.scheduler.JobProperty;
-import org.springframework.context.annotation.Profile;
+import org.mq.register.publisher.JobProperties;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -12,17 +11,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
 @AllArgsConstructor
-@Profile("!test")
-public class PublisherRunnableGenerator {
+public class PublisherGenerator {
     private TableMapper mapper;
     private JmsTemplate jmsTemplate;
 
-    public List<Runnable> generatePublisherRunnable(JobProperty job) {
-        Map<String, List<Integer>> timeDivisionMap = new HashMap<>();
+    public List<Runnable> generatePublisherRunnable(JobProperties.JobProperty job) {
+        Map<String, List<Integer>> timeDivisionMap = new ConcurrentHashMap<>();
         timeDivision(job, timeDivisionMap);
         List<Runnable> runnableList = new ArrayList<>();
         for (String key : timeDivisionMap.keySet()) {
@@ -42,7 +41,7 @@ public class PublisherRunnableGenerator {
         return runnableList;
     }
 
-    private void timeDivision(JobProperty job, Map<String, List<Integer>> timeDivisionMap) {
+    private void timeDivision(JobProperties.JobProperty job, Map<String, List<Integer>> timeDivisionMap) {
         for (int i = 0; i < job.getThreadSize(); i++) {
             timeDivisionMap.put(String.format("%s-%s", job.getTableName(), i), new ArrayList<>());
         }
@@ -51,7 +50,5 @@ public class PublisherRunnableGenerator {
             timeDivisionMap.get(String.format("%s-%s", job.getTableName(), i % job.getThreadSize())).add(i);
         }
     }
-
-
 }
 

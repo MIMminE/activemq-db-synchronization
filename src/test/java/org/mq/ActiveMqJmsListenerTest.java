@@ -1,20 +1,14 @@
 package org.mq;
 
 import jakarta.jms.ConnectionFactory;
-import jakarta.jms.Message;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.mq.message.DynamicJmsListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jms.config.*;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.listener.MessageListenerContainer;
-import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
-import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.reflect.Method;
@@ -45,8 +39,6 @@ public class ActiveMqJmsListenerTest {
     }
     @Test
     void basic() throws InterruptedException, NoSuchMethodException {
-        System.out.println(factory1);
-        System.out.println("jmsTemplate = " + jmsTemplate.getClass());
 
         MethodJmsListenerEndpoint endpoint = new MethodJmsListenerEndpoint();
         Method method = testEnd.class.getMethod("endMethod");
