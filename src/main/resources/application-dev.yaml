@@ -23,6 +23,8 @@ spring:
 
 
 #logging:
+#  level:
+#    org.springframework.jms.listener: debug
 #  pattern:
 #    console: "%d{HH:mm:ss.SSS} [%thread] %-5level- %msg%n"
 

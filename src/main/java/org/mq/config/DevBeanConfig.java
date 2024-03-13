@@ -7,6 +7,7 @@ import org.mq.messaging.module.publisher.PublisherGenerator;
 import org.mq.register.consumer.ConsumerRegister;
 import org.mq.register.publisher.JobProperties;
 import org.mq.register.publisher.PublisherRegister;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.boot.task.ThreadPoolTaskSchedulerBuilder;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpointRegistry;
+import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
 @Configuration
 @Profile("dev")
@@ -24,10 +26,9 @@ public class DevBeanConfig {
             ThreadPoolTaskSchedulerBuilder schedulerBuilder,
             ThreadPoolTaskExecutorBuilder executorBuilder,
             JobProperties jobProperties,
-            PublisherGenerator publisherRunnableGenerator){
-        return new PublisherRegister(schedulerBuilder,executorBuilder,jobProperties,publisherRunnableGenerator);
+            PublisherGenerator publisherRunnableGenerator) {
+        return new PublisherRegister(schedulerBuilder, executorBuilder, jobProperties, publisherRunnableGenerator);
     }
-
 
     @Bean
     public ConsumerRegister consumerRegister(
@@ -35,13 +36,22 @@ public class DevBeanConfig {
             DefaultJmsListenerContainerFactory containerFactory,
             JmsListenerEndpointRegistry registry,
             JobProperties jobProperties
-            ){
-        return new ConsumerRegister(consumerGenerator, containerFactory, registry, jobProperties );
+    ) {
+        return new ConsumerRegister(consumerGenerator, containerFactory, registry, jobProperties);
     }
 
-
     @Bean
-    public ConsumerGenerator consumerGenerator(){
-        return new ConsumerGenerator(new DefaultConsumerListener());
+    public ConsumerGenerator consumerGenerator(
+            DefaultConsumerListener defaultConsumerListener,
+            @Qualifier("handleMethodFactory")
+            DefaultMessageHandlerMethodFactory handlerMethodFactory) {
+        return new ConsumerGenerator(defaultConsumerListener, handlerMethodFactory);
+    }
+
+    @Bean(name = "handleMethodFactory")
+    public DefaultMessageHandlerMethodFactory handlerMethodFactory() {
+        DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
+        factory.afterPropertiesSet();
+        return factory;
     }
 }

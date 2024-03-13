@@ -30,6 +30,12 @@ public class ConsumerRegister implements CommandLineRunner {
         }
     }
 
+//    @JmsListener(destination = "test1")
+//    public void test(Map<String, Object> mes){
+//        System.out.println(mes);
+//    }
+
+
     @Override
     public void run(String... args) throws Exception {
         log.info("Running CommandLineRunner Class : {}", this.getClass());

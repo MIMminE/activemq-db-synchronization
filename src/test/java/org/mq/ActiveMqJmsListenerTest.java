@@ -51,7 +51,6 @@ public class ActiveMqJmsListenerTest {
         endpoint.setMessageHandlerMethodFactory(new DefaultMessageHandlerMethodFactory());
         registry.registerListenerContainer(endpoint, factory1, true);
 
-
         Collection<MessageListenerContainer> listenerContainers = registry.getListenerContainers();
         for (MessageListenerContainer listenerContainer : listenerContainers) {
             System.out.println("메시지 리스너 : "+ listenerContainer);
