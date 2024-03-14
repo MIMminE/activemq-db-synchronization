@@ -2,48 +2,49 @@ spring:
   profiles:
     active: test
 
-  datasource:
-    generate-unique-name: false
-    # H2 임베디드 데이터베이스 사용
 
-  artemis:
-    user: artemis
-    password: artemis
-    broker-url: tcp://localhost:61616
-
-  jms:
-    pub-sub-domain: true
-  task:
-    execution:
-      pool:
-        core-size: 10
-      thread-name-prefix: TASK-
-  sql:
-    init:
-      mode: always
-      schema-locations: schema.sql
-
-
-logging:
-  level:
-    org:
-      mq: debug
-      springframework.jdbc: debug
-
-db-sync:
-  jobs:
-    - table_name: authlog
-      thread_size: 3
-      topic_name: topic-${db-sync.jobs[0].table-name}
-      interval_millis: 3000
-
-    - table_name: testtbl
-      thread_size: 5
-      topic_name: topic-${db-sync.jobs[0].table-name}
-      interval_millis: 6000
-
-
-#    - table-name: welcometbl
-#      thread-size: 10
-#      topic-name: null
-#      interval-millis: 1000
+#  datasource:
+#    generate-unique-name: false
+#    # H2 임베디드 데이터베이스 사용
+#
+#  artemis:
+#    user: artemis
+#    password: artemis
+#    broker-url: tcp://localhost:61616
+#
+#  jms:
+#    pub-sub-domain: true
+#  task:
+#    execution:
+#      pool:
+#        core-size: 10
+#      thread-name-prefix: TASK-
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: schema.sql
+#
+#
+#logging:
+#  level:
+#    org:
+#      mq: debug
+#      springframework.jdbc: debug
+#
+#db-sync:
+#  jobs:
+#    - table_name: authlog
+#      thread_size: 3
+#      topic_name: topic-${db-sync.jobs[0].table-name}
+#      interval_millis: 3000
+#
+#    - table_name: testtbl
+#      thread_size: 5
+#      topic_name: topic-${db-sync.jobs[0].table-name}
+#      interval_millis: 6000
+#
+#
+##    - table-name: welcometbl
+##      thread-size: 10
+##      topic-name: null
+##      interval-millis: 1000

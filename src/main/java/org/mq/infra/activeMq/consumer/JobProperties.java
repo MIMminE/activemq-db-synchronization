@@ -1,0 +1,27 @@
+package org.mq.infra.activeMq.consumer;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Data
+//@Component
+//@ConfigurationProperties(prefix = "db-sync")
+public class JobProperties {
+    private List<JobProperty> jobs;
+
+    @Getter
+    @Setter
+    @ToString
+    public static class JobProperty {
+
+        private String tableName;
+        private String topicName;
+        private int threadSize;
+        private int intervalMillis;
+    }
+}

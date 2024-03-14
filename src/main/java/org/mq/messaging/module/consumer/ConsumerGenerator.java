@@ -26,7 +26,6 @@ public class ConsumerGenerator {
         endpoint.setBean(bean);
         endpoint.setMethod(method);
         endpoint.setDestination(jobProperty.getTopicName());
-
         endpoint.setMessageHandlerMethodFactory(handlerMethodFactory);
 
         return endpoint;
