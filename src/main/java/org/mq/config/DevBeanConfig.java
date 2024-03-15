@@ -43,7 +43,7 @@ public class DevBeanConfig {
     @Bean
     public ConsumerGenerator consumerGenerator(
             DefaultConsumerListener defaultConsumerListener,
-            @Qualifier("handleMethodFactory")
+            @Qualifier("handleMethodFactory") // integrationMessageHandlerMethodFactory 도 가능
             DefaultMessageHandlerMethodFactory handlerMethodFactory) {
         return new ConsumerGenerator(defaultConsumerListener, handlerMethodFactory);
     }

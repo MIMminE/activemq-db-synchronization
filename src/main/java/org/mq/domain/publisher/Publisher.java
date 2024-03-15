@@ -1,4 +1,5 @@
 package org.mq.domain.publisher;
 
-public interface PublisherRegister{
+public abstract class Publisher {
+
 }
