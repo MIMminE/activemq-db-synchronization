@@ -65,8 +65,7 @@ class ActiveMqConsumerGeneratorTest {
         ActiveMqConsumerRegister register = new ActiveMqConsumerRegister(
                 new DefaultMessageHandlerMethodFactory()
                 , new DefaultJmsListenerContainerFactory()
-                ,listener);
-
+                , listener);
 
         ConsumerManager<ActiveMqConsumer> manager = new ActiveMqConsumerManager(register);
 
@@ -83,25 +82,27 @@ class ActiveMqConsumerGeneratorTest {
     }
 
 
-//    @Test
-//    void activeMQ_Consumer_등록_and_메시지_수신_성공() throws InterruptedException {
-//        DefaultMessageHandlerMethodFactory handleMethodFactory = new DefaultMessageHandlerMethodFactory();
-//        handleMethodFactory.afterPropertiesSet();
-//        ActiveMqListener activeMqListener = new ActiveMqListener();
-//        ActiveMqConsumerManager manager = new ActiveMqConsumerManager(
-//                property,
-//                handleMethodFactory,
-//                defaultJmsListenerContainerFactory,
-//                activeMqListener
-//        );
-//        ActiveMqConsumer consumer = manager.createConsumer();
-//        manager.registerConsumer(consumer);
-//
-//        Map<String, Object> testData = new HashMap<>();
-//        testData.put("testKey", "testData");
-//
-//        jmsTemplate.convertAndSend(Objects.requireNonNull(consumer.getEndpoint().getDestination()), testData);
-//    }
+    @Test
+    void activeMQ_Consumer_등록_and_메시지_수신_성공() throws InterruptedException {
+        ExternalServerDefaultMethod listener = new ExternalServerDefaultMethod();
+
+        ActiveMqConsumerRegister register = new ActiveMqConsumerRegister(
+                new DefaultMessageHandlerMethodFactory()
+                , defaultJmsListenerContainerFactory
+                , listener);
+
+        ConsumerManager<ActiveMqConsumer> manager = new ActiveMqConsumerManager(register);
+
+        ActiveMqConsumer consumer = manager.createConsumer(properties.get(0));
+        System.out.println("consumer = " + consumer);
+        manager.registerConsumer(consumer);
+
+        Map<String, Object> testData = new HashMap<>();
+        testData.put("testKey", "testData");
+
+        jmsTemplate.convertAndSend(Objects.requireNonNull(consumer.getEndpoint().getDestination()), testData);
+
+    }
 
     @Test
     void activeMQ_Consumer_등록_실패() {

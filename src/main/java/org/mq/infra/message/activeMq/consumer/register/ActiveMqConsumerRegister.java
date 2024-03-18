@@ -4,13 +4,14 @@ import org.mq.infra.message.activeMq.consumer.model.ActiveMqConsumer;
 import org.mq.infra.message.activeMq.consumer.method.ExternalServerDefaultMethod;
 import org.mq.infra.message.activeMq.consumer.model.JobProperties.JobProperty;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerEndpointRegistry;
 import org.springframework.jms.config.MethodJmsListenerEndpoint;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class ActiveMqConsumerRegister {
+public class ActiveMqConsumerRegister extends JmsListenerEndpointRegistry {
 
     private final DefaultMessageHandlerMethodFactory methodFactory;
     private final DefaultJmsListenerContainerFactory listenerContainerFactory;
@@ -23,10 +24,6 @@ public class ActiveMqConsumerRegister {
         this.methodFactory = methodFactory;
         this.listenerContainerFactory = listenerContainerFactory;
         this.activeMqListener = activeMqListener;
-    }
-
-    public void registerConsumer() {
-
     }
 
     public ActiveMqConsumer createConsumer(JobProperty jobProperty) {
@@ -50,5 +47,12 @@ public class ActiveMqConsumerRegister {
                 .factory(listenerContainerFactory)
                 .startImmediately(true)
                 .build();
+    }
+
+    public void registerConsumer(ActiveMqConsumer consumer) {
+        super.registerListenerContainer(
+                consumer.getEndpoint(),
+                consumer.getFactory(),
+                consumer.isStartImmediately());
     }
 }
