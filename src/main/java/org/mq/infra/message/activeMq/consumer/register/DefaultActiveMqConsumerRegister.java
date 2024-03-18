@@ -3,7 +3,7 @@ package org.mq.infra.message.activeMq.consumer.register;
 import org.mq.infra.message.activeMq.consumer.ActiveMqConsumerRegister;
 import org.mq.infra.message.activeMq.consumer.model.ActiveMqConsumer;
 import org.mq.infra.message.activeMq.consumer.method.ExternalServerDefaultMethod;
-import org.mq.infra.message.activeMq.consumer.model.JobProperties.JobProperty;
+import org.mq.infra.message.activeMq.consumer.model.ConsumerJobProperties.ConsumerJobProperty;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpointRegistry;
 import org.springframework.jms.config.MethodJmsListenerEndpoint;
@@ -28,7 +28,7 @@ public class DefaultActiveMqConsumerRegister extends JmsListenerEndpointRegistry
     }
 
     @Override
-    public ActiveMqConsumer createConsumer(JobProperty jobProperty) {
+    public ActiveMqConsumer createConsumer(ConsumerJobProperty jobProperty) {
 
         MethodJmsListenerEndpoint endpoint = new MethodJmsListenerEndpoint();
         Method method = null;

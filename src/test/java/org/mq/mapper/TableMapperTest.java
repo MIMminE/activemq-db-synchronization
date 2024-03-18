@@ -2,6 +2,7 @@ package org.mq.mapper;
 
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.mq.infra.message.activeMq.publisher.mapper.SqlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TableMapperTest {
 
     @Autowired
-    private TableMapper mapper;
+    private SqlMapper mapper;
 
     @Test
     void selectTest() {

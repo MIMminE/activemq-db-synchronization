@@ -7,8 +7,9 @@ import org.mq.domain.consumer.ConsumerManager;
 import org.mq.infra.message.activeMq.consumer.ActiveMqConsumerManager;
 import org.mq.infra.message.activeMq.consumer.model.ActiveMqConsumer;
 import org.mq.infra.message.activeMq.consumer.method.ExternalServerDefaultMethod;
+import org.mq.infra.message.activeMq.consumer.model.ConsumerJobProperties.ConsumerJobProperty;
 import org.mq.infra.message.activeMq.consumer.register.DefaultActiveMqConsumerRegister;
-import org.mq.infra.message.activeMq.consumer.model.JobProperties;
+import org.mq.infra.message.activeMq.consumer.model.ConsumerJobProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQConnectionDetails;
 import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQProperties;
@@ -24,7 +25,7 @@ import java.util.*;
 @SpringBootTest
 @ActiveProfiles("test")
 class ActiveMqConsumerGeneratorTest {
-    static List<JobProperties.JobProperty> properties = new ArrayList<>();
+    static List<ConsumerJobProperty> properties = new ArrayList<>();
 
     @Autowired
     private DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory;
@@ -41,13 +42,13 @@ class ActiveMqConsumerGeneratorTest {
     @BeforeAll
     static void init() {
 
-        JobProperties.JobProperty property1 = new JobProperties.JobProperty();
+        ConsumerJobProperty property1 = new ConsumerJobProperty();
         property1.setTopicName("testTopic");
         property1.setTableName("testTable");
         property1.setThreadSize(1);
         property1.setIntervalMillis(5000);
 
-        JobProperties.JobProperty property2 = new JobProperties.JobProperty();
+        ConsumerJobProperty property2 = new ConsumerJobProperty();
         property2.setTopicName("testTopic2");
         property2.setTableName("testTable2");
         property2.setThreadSize(2);
@@ -69,7 +70,7 @@ class ActiveMqConsumerGeneratorTest {
 
         ConsumerManager<ActiveMqConsumer> manager = new ActiveMqConsumerManager(register);
 
-        for (JobProperties.JobProperty property : properties) {
+        for (ConsumerJobProperty property : properties) {
             ActiveMqConsumer consumer = manager.createConsumer(property);
             Assertions.assertThat(consumer).isNotNull();
             System.out.println(consumer.toString());

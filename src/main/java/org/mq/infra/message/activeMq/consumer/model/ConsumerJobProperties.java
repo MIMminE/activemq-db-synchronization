@@ -10,13 +10,13 @@ import java.util.List;
 @Data
 //@Component
 //@ConfigurationProperties(prefix = "db-sync")
-public class JobProperties {
-    private List<JobProperty> jobs;
+public class ConsumerJobProperties {
+    private List<ConsumerJobProperty> jobs;
 
     @Getter
     @Setter
     @ToString
-    public static class JobProperty {
+    public static class ConsumerJobProperty {
 
         private String tableName;
         private String topicName;

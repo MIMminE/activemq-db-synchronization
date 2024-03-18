@@ -3,7 +3,7 @@ package org.mq.infra.message.activeMq.consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.mq.domain.consumer.ConsumerManager;
 import org.mq.infra.message.activeMq.consumer.model.ActiveMqConsumer;
-import org.mq.infra.message.activeMq.consumer.model.JobProperties.JobProperty;
+import org.mq.infra.message.activeMq.consumer.model.ConsumerJobProperties.ConsumerJobProperty;
 
 @Slf4j
 public class ActiveMqConsumerManager implements ConsumerManager<ActiveMqConsumer> {
@@ -22,8 +22,7 @@ public class ActiveMqConsumerManager implements ConsumerManager<ActiveMqConsumer
 
     @Override
     public ActiveMqConsumer createConsumer(Object... params) {
-        JobProperty jobProperty = (JobProperty) params[0];
-        return consumerRegister.createConsumer(jobProperty);
+        return consumerRegister.createConsumer((ConsumerJobProperty) params[0]);
     }
 
     @Override

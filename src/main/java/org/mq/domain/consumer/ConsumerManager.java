@@ -1,7 +1,5 @@
 package org.mq.domain.consumer;
 
-import java.util.List;
-
 public interface ConsumerManager<T extends Consumer> {
 
     T createConsumer();
