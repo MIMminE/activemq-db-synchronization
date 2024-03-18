@@ -1,5 +1,6 @@
 package org.mq.infra.message.activeMq.consumer.register;
 
+import org.mq.infra.message.activeMq.consumer.ActiveMqConsumerRegister;
 import org.mq.infra.message.activeMq.consumer.model.ActiveMqConsumer;
 import org.mq.infra.message.activeMq.consumer.method.ExternalServerDefaultMethod;
 import org.mq.infra.message.activeMq.consumer.model.JobProperties.JobProperty;
@@ -11,13 +12,13 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class ActiveMqConsumerRegister extends JmsListenerEndpointRegistry {
+public class DefaultActiveMqConsumerRegister extends JmsListenerEndpointRegistry implements ActiveMqConsumerRegister {
 
     private final DefaultMessageHandlerMethodFactory methodFactory;
     private final DefaultJmsListenerContainerFactory listenerContainerFactory;
     private final ExternalServerDefaultMethod activeMqListener;
 
-    public ActiveMqConsumerRegister(
+    public DefaultActiveMqConsumerRegister(
             DefaultMessageHandlerMethodFactory methodFactory,
             DefaultJmsListenerContainerFactory listenerContainerFactory,
             ExternalServerDefaultMethod activeMqListener) {
@@ -26,6 +27,7 @@ public class ActiveMqConsumerRegister extends JmsListenerEndpointRegistry {
         this.activeMqListener = activeMqListener;
     }
 
+    @Override
     public ActiveMqConsumer createConsumer(JobProperty jobProperty) {
 
         MethodJmsListenerEndpoint endpoint = new MethodJmsListenerEndpoint();
@@ -49,6 +51,7 @@ public class ActiveMqConsumerRegister extends JmsListenerEndpointRegistry {
                 .build();
     }
 
+    @Override
     public void registerConsumer(ActiveMqConsumer consumer) {
         super.registerListenerContainer(
                 consumer.getEndpoint(),

@@ -7,7 +7,7 @@ import org.mq.domain.consumer.ConsumerManager;
 import org.mq.infra.message.activeMq.consumer.ActiveMqConsumerManager;
 import org.mq.infra.message.activeMq.consumer.model.ActiveMqConsumer;
 import org.mq.infra.message.activeMq.consumer.method.ExternalServerDefaultMethod;
-import org.mq.infra.message.activeMq.consumer.register.ActiveMqConsumerRegister;
+import org.mq.infra.message.activeMq.consumer.register.DefaultActiveMqConsumerRegister;
 import org.mq.infra.message.activeMq.consumer.model.JobProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQConnectionDetails;
@@ -62,7 +62,7 @@ class ActiveMqConsumerGeneratorTest {
     void activeMQ_Consumer_생성_성공() {
         ExternalServerDefaultMethod listener = new ExternalServerDefaultMethod();
 
-        ActiveMqConsumerRegister register = new ActiveMqConsumerRegister(
+        DefaultActiveMqConsumerRegister register = new DefaultActiveMqConsumerRegister(
                 new DefaultMessageHandlerMethodFactory()
                 , new DefaultJmsListenerContainerFactory()
                 , listener);
@@ -86,7 +86,7 @@ class ActiveMqConsumerGeneratorTest {
     void activeMQ_Consumer_등록_and_메시지_수신_성공() throws InterruptedException {
         ExternalServerDefaultMethod listener = new ExternalServerDefaultMethod();
 
-        ActiveMqConsumerRegister register = new ActiveMqConsumerRegister(
+        DefaultActiveMqConsumerRegister register = new DefaultActiveMqConsumerRegister(
                 new DefaultMessageHandlerMethodFactory()
                 , defaultJmsListenerContainerFactory
                 , listener);

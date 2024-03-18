@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.mq.domain.consumer.ConsumerManager;
 import org.mq.infra.message.activeMq.consumer.model.ActiveMqConsumer;
 import org.mq.infra.message.activeMq.consumer.model.JobProperties.JobProperty;
-import org.mq.infra.message.activeMq.consumer.register.ActiveMqConsumerRegister;
 
 @Slf4j
 public class ActiveMqConsumerManager implements ConsumerManager<ActiveMqConsumer> {
