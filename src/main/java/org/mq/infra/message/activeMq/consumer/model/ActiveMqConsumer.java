@@ -1,4 +1,4 @@
-package org.mq.infra.message.activeMq.consumer;
+package org.mq.infra.message.activeMq.consumer.model;
 
 import lombok.Builder;
 import lombok.Getter;
