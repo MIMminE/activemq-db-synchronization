@@ -1,4 +1,4 @@
-package org.mq.mapper;
+package org.mq.infra.message.activeMq.publisher.mapper;
 
 import org.apache.ibatis.jdbc.SQL;
 

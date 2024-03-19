@@ -12,8 +12,12 @@ spring:
     user: artemis
     password: artemis
     broker-url: tcp://localhost:61616
-  jms:
-    pub-sub-domain: true
+#  jms:
+#    pub-sub-domain: true
+
+
+
+
 #  task:
 #    execution:
 #      pool:
@@ -29,7 +33,8 @@ logging:
   level:
     org:
 #      mq: debug
-      springframework.jdbc: debug
+#      springframework.jdbc: debug
+#      springframework.beans: debug
 #
 #db-sync:
 #  jobs:
