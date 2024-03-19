@@ -8,6 +8,7 @@ import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mq.infra.message.activeMq.publisher.config.PublisherConfig;
 import org.mq.infra.message.activeMq.publisher.mapper.SqlMapper;
 import org.mq.infra.message.activeMq.publisher.model.ActiveMqPublisher;
 import org.mq.infra.message.activeMq.publisher.model.PublisherJobProperties.PublisherJobProperty;
@@ -16,6 +17,7 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ActiveProfiles;
 

@@ -3,16 +3,18 @@ package org.mq.infra.message.activeMq.publisher.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
+import org.mq.config.SystemConfig;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-import org.springframework.jms.support.converter.MessagingMessageConverter;
 
-@Configuration
 @RequiredArgsConstructor
+@Configuration
+@Conditional(SystemConfig.class)
+@ConditionalOnProperty(name = "system.config.activemq.enabled", havingValue = "true")
 public class PublisherConfig {
 
     @Bean(name = "mqConnectionFactory")
@@ -28,7 +30,6 @@ public class PublisherConfig {
     JmsTemplate mqJmsTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate(mqConnectionFactory());
         jmsTemplate.setPubSubDomain(true);
-//        jmsTemplate.setMessageConverter(new MappingJackson2MessageConverter());
         return jmsTemplate;
     }
 

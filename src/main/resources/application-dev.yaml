@@ -28,15 +28,45 @@ spring:
 #  pattern:
 #    console: "%d{HH:mm:ss.SSS} [%thread] %-5level- %msg%n"
 
+
+
+system:
+  config:
+    activemq:
+      enabled: true
+      user: artemis
+      password: artemis
+      broker-url: tcp://localhost:61616
+
+      publisher:
+        sync_table:
+        - table_name: authlog
+          topic_name: authlog_topic
+          thread_size: 10
+          interval_millis: 5000
+
+        - table_name: testtbl
+          topic_name: test_topic
+          thread_size: 10
+          interval_millis: 1000
+
+
+#    database: MariaDB
+
+
+
+
+
 db-sync:
+
   jobs:
     - table_name: authlog
       thread_size: 10
       topic_name: test1
       interval_millis: 10000
-#      time_field_name: //
-#      테이블마다 time_stamp 역할을 수행하는 테이블명이 다르다.
-#
+    #      time_field_name: //
+    #      테이블마다 time_stamp 역할을 수행하는 테이블명이 다르다.
+    #
     - table_name: testtbl
       thread_size: 10
       topic_name: test2

@@ -33,12 +33,6 @@ class ActiveMqConsumerGeneratorTest {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @Autowired
-    private ActiveMQProperties activeMQProperties;
-
-    @Autowired
-    private ActiveMQConnectionDetails details;
-
     @BeforeAll
     static void init() {
 

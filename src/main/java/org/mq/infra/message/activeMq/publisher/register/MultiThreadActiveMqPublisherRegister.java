@@ -5,12 +5,14 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.mq.exception.PublisherSendException;
 import org.mq.infra.message.activeMq.publisher.ActiveMqPublisherRegister;
+import org.mq.infra.message.activeMq.publisher.config.PublisherConfig;
 import org.mq.infra.message.activeMq.publisher.mapper.SqlMapper;
 import org.mq.infra.message.activeMq.publisher.model.ActiveMqPublisher;
 import org.mq.infra.message.activeMq.publisher.model.PublisherJobProperties.PublisherJobProperty;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.boot.task.ThreadPoolTaskSchedulerBuilder;
+import org.springframework.context.annotation.Import;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -24,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @ToString
+@Import(PublisherConfig.class)
 public class MultiThreadActiveMqPublisherRegister implements ActiveMqPublisherRegister {
 
     @Getter
