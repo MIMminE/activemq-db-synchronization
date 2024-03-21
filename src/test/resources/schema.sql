@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS testtbl;
 DROP TABLE IF EXISTS authlog;
 create table authlog
 (
-    cli_ip     int         not null,
-    result     int         not null,
+    cli_ip     varchar(32)         not null,
+    result     varchar(32)         not null,
     sync_flag  bit null,
     fail_code  varchar(8) null,
     id         bigint auto_increment

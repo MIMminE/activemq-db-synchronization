@@ -1,39 +1,45 @@
 package org.mq.config;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-@ConfigurationProperties(
-        prefix = "app.config.activemq"
-)
-@NoArgsConstructor
-@Data
+@ToString
+@Configuration
 public class ApplicationProperties {
-    private String mode = "default";
-    private String user;
-    private String password;
-    private String brokerUrl;
 
+    @Configuration
+    @ConfigurationProperties(
+            prefix = "app.config.activemq"
+    )
+    @Data
+    public class AppConfigProperties {
+        private String mode = "default";
+        private String user;
+        private String password;
+        private String brokerUrl;
 
+    }
+
+    @Configuration
     @ConditionalOnProperty(name = "app.config.activemq.mode", havingValue = "default")
     @ConfigurationProperties(
             prefix = "app.db-sync"
     )
     @Data
-    static class SyncProperties {
-        private List<Job> job;
+    public class SyncTableProperties {
+        private List<Job> jobs;
 
-        static class Job {
+        @Data
+        public static class Job {
             String tableName;
             String topicName;
             int threadSize;
             int intervalMillis;
         }
-
     }
 }

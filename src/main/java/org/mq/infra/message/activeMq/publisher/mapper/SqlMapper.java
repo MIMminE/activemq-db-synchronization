@@ -10,6 +10,5 @@ import java.util.Map;
 @Mapper
 public interface SqlMapper {
     @Select("SELECT * FROM ${tableName} where mod(second(time_stamp),10)  = ${modIndex} and sync_flag = false")
-    List<Map<String, Object>> selectTable(@Param("tableName") String tableName, @Param("modIndex") int modIndex);
-
+    List<Map<String, Object>> selectTableBySyncCondition(@Param("tableName") String tableName, @Param("modIndex") int modIndex);
 }

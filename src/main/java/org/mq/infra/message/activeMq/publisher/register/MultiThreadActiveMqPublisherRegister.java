@@ -50,7 +50,7 @@ public class MultiThreadActiveMqPublisherRegister implements ActiveMqPublisherRe
         for (List<Integer> modIndexList : timedDivision.values()) {
             runnableList.add(() -> {
                 for (Integer modIndex : modIndexList) {
-                    List<Map<String, Object>> rows = mapper.selectTable(jobProperty.getTableName(), modIndex);
+                    List<Map<String, Object>> rows = mapper.selectTableBySyncCondition(jobProperty.getTableName(), modIndex);
 
                     for (Map<String, Object> row : rows) {
                         // time_stamp 타입은 지원하지 않음. TODO : Time_stamp 필드, 테이블별로 지정하기
