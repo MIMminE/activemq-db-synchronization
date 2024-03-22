@@ -1,5 +1,7 @@
 package org.broker.model;
 
-public interface BrokerServer {
+public interface BrokerServer<T> {
     boolean healthCheck();
+
+    T getConnection();
 }

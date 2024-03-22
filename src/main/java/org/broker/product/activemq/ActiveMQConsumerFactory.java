@@ -1,28 +1,29 @@
 package org.broker.product.activemq;
 
-import org.broker.model.BrokerServer;
-import org.broker.model.Consumer;
 import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
 import org.broker.product.activemq.consumer.model.ActiveMQConsumer;
+import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
 
-public class ActiveMQConsumerFactory implements ConsumerFactory {
+import java.util.List;
+
+public class ActiveMQConsumerFactory implements ConsumerFactory<ActiveMQServer, ActiveMQConsumer> {
 
     private ActiveMqConsumerPolicy consumerPolicy;
-    private ActiveMQServer activeMQServer = new ActiveMQServer(); // TODO
+    private ActiveMQServer activeMQServer;
 
-    public ActiveMQConsumerFactory(ActiveMqConsumerPolicy consumerPolicy) {
+    public ActiveMQConsumerFactory(ActiveMqConsumerPolicy consumerPolicy, ArtemisProperties properties) {
         this.consumerPolicy = consumerPolicy;
+        this.activeMQServer = new ActiveMQServer(properties);
     }
 
     @Override
-    public BrokerServer createServerInstance() {
+    public ActiveMQServer createServerInstance() {
         return activeMQServer;
     }
 
     @Override
-    public Consumer createConsumer() {
-        // TODO
-
-        return new ActiveMQConsumer();
+    public List<ActiveMQConsumer> createConsumers() {
+        List<ActiveMQConsumer> consumers = consumerPolicy.createConsumer();
+        return consumers;
     }
 }

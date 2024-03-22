@@ -41,7 +41,7 @@
 //        endpoint.setBean(activeMqListener);
 //        endpoint.setMethod(method);
 //        endpoint.setDestination(jobProperty.getSyncTableProperties().getTopicName());
-//        endpoint.setMessageHandlerMethodFactory(methodFactory);
+//        endpoint.setMessageHandlerMethodFactory(methodFactory);DC
 //
 //        return ActiveMqConsumer.builder()
 //                .endpoint(endpoint)

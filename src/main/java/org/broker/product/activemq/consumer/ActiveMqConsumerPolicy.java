@@ -1,4 +1,10 @@
 package org.broker.product.activemq.consumer;
 
-public interface ActiveMqConsumerPolicy {
+import org.broker.model.ConsumerPolicy;
+import org.broker.product.activemq.consumer.model.ActiveMQConsumer;
+
+import java.util.List;
+
+public interface ActiveMqConsumerPolicy extends ConsumerPolicy {
+    List<ActiveMQConsumer> createConsumer();
 }

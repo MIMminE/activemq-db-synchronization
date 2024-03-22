@@ -4,19 +4,21 @@ import org.broker.model.BrokerServer;
 import org.broker.model.Consumer;
 import org.broker.product.activemq.ConsumerFactory;
 
-public class ConsumerManager {
+import java.util.List;
 
-    private ConsumerFactory executor;
+public class ConsumerManager<T extends BrokerServer<?>, C extends Consumer> {
 
-    public ConsumerManager(ConsumerFactory executor) {
+    private final ConsumerFactory<T, C> executor;
+
+    public ConsumerManager(ConsumerFactory<T, C> executor) {
         this.executor = executor;
     }
 
-    public BrokerServer createServerInstance() {
+    public T createServerInstance() {
         return executor.createServerInstance();
     }
 
-    public Consumer createConsumer() {
-        return executor.createConsumer();
+    public List<C> createConsumer() {
+        return executor.createConsumers();
     }
 }

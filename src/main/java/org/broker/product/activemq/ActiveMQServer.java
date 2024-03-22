@@ -1,34 +1,29 @@
 package org.broker.product.activemq;
 
+import jakarta.jms.JMSException;
+import lombok.Getter;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.broker.model.BrokerServer;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
-import org.springframework.context.annotation.Bean;
 
-public class ActiveMQServer implements BrokerServer {
+@Getter
+public class ActiveMQServer implements BrokerServer <ActiveMQConnectionFactory>{
 
-    private ActiveMQConnectionFactory connectionFactory = brokerServer();
+    private ActiveMQConnectionFactory connectionFactory;
+    private final ArtemisProperties properties;
 
-
-    @Bean
-    ArtemisProperties artemisProperties() {
-        return new ArtemisProperties();
+    public ActiveMQServer(ArtemisProperties properties) {
+        this.properties = properties;
+        this.connectionFactory = createActiveMQConnectionFactory(this.properties);
     }
 
+    private ActiveMQConnectionFactory createActiveMQConnectionFactory(ArtemisProperties properties) {
+        try{
+            connectionFactory = new ActiveMQConnectionFactory(properties.getBrokerUrl());
+        } catch (RuntimeException e){
+            throw new IllegalArgumentException("Property가 올바르지 않습니다.",e);
+        }
 
-    private ActiveMQConnectionFactory brokerServer() {
-        ArtemisProperties properties = artemisProperties();
-
-
-        /**
-         * sample
-         */
-
-        properties.setBrokerUrl("tcp://localhost:61616");
-        properties.setUser("artemis");
-        properties.setPassword("artemis");
-
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(properties.getBrokerUrl());
         connectionFactory.setUser(properties.getUser());
         connectionFactory.setPassword(properties.getPassword());
         return connectionFactory;
@@ -36,6 +31,16 @@ public class ActiveMQServer implements BrokerServer {
 
     @Override
     public boolean healthCheck() {
+        try {
+            connectionFactory.createConnection();
+        } catch (JMSException e) {
+            return false;
+        }
         return true;
+    }
+
+    @Override
+    public ActiveMQConnectionFactory getConnection() {
+        return connectionFactory;
     }
 }
