@@ -1,4 +1,4 @@
-package org.broker.product.activemq.consumer.model;
+package org.broker.product.activemq.consumer;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class ActiveMQConsumerTest {
         endpoint.setDestination(destination);
 
         // when
-        activeMQConsumer.createActiveMQConsumer(endpoint);
+        activeMQConsumer.config(endpoint);
 
         // then
         assertThat(activeMQConsumer.getEndpoint())
@@ -57,7 +57,7 @@ class ActiveMQConsumerTest {
         MethodJmsListenerEndpoint endpoint = new MethodJmsListenerEndpoint();
 
         // when // then
-        assertThatThrownBy(() -> activeMQConsumer.createActiveMQConsumer(endpoint))
+        assertThatThrownBy(() -> activeMQConsumer.config(endpoint))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("endPoint 구성이 잘못됐습니다");
 
@@ -72,7 +72,7 @@ class ActiveMQConsumerTest {
         ActiveMQConsumer activeMQConsumer = new ActiveMQConsumer();
 
         // when
-        activeMQConsumer.createActiveMQConsumer(method, destination);
+        activeMQConsumer.config(method, destination);
 
         // then
 
@@ -97,7 +97,7 @@ class ActiveMQConsumerTest {
         messageHandlerMethodFactory.setMessageConverter(new MapMessageConverter());
 
         // when
-        activeMQConsumer.createActiveMQConsumer(method, destination, messageHandlerMethodFactory);
+        activeMQConsumer.config(method, destination, messageHandlerMethodFactory);
 
         // then
         assertThat(activeMQConsumer.getHandlerMethodFactory()).isEqualTo(messageHandlerMethodFactory);

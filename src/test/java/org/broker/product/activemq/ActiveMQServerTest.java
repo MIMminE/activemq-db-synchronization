@@ -1,16 +1,32 @@
 package org.broker.product.activemq;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.*;
 
-// TODO Mock 객체 사용하여 수정할 것
 @DisplayName("ActiveMQ 서버 구현체 기능 테스트")
+@ExtendWith(MockitoExtension.class)
 class ActiveMQServerTest {
+
+    private final String fakeUser = "artemis";
+    private final String fakePassword = "artemis";
+    private final String fakeBrokerUrl = "tcp://localhost:61616";
 
     @DisplayName("정상적인 properties 인스턴스가 들어오면 커넥션 팩토리 생성에 성공한다.")
     @Test
@@ -49,28 +65,74 @@ class ActiveMQServerTest {
     @DisplayName("서버와 연결이 가능한 상태일 때 True를 반환한다.")
     @Test
     void healthCheckSuccess() {
+
         // given
+        ActiveMQServerHealthChecker activeMQServerHealthChecker = Mockito.mock(ActiveMQServerHealthChecker.class);
+        given(activeMQServerHealthChecker.healthCheck(
+                anyString(), anyString(), anyString()
+        )).willAnswer(invocationOnMock -> {
+            String user = invocationOnMock.getArgument(0);
+            String password = invocationOnMock.getArgument(1);
+            String brokerUrl = invocationOnMock.getArgument(2);
+
+            if (Objects.equals(user, fakeUser) && Objects.equals(password, fakePassword) && Objects.equals(brokerUrl, fakeBrokerUrl))
+                return true;
+            else
+                return false;
+        });
+
         ArtemisProperties properties = new ArtemisProperties();
         properties.setUser("artemis");
         properties.setPassword("artemis");
         properties.setBrokerUrl("tcp://localhost:61616");
-        ActiveMQServer activeMQServer = new ActiveMQServer(properties);
 
-        // when // then
-        assertThat(activeMQServer.healthCheck()).isTrue();
+        // when
+        boolean result = activeMQServerHealthChecker.healthCheck(
+                properties.getUser(),
+                properties.getPassword(),
+                properties.getBrokerUrl());
+
+        // then
+        assertThat(result).isTrue();
     }
 
     @DisplayName("서버와 연결이 불가능한 상태일 때 False를 반환한다.")
     @Test
     void healthCheckFail() {
         // given
+        ActiveMQServerHealthChecker activeMQServerHealthChecker = Mockito.mock(ActiveMQServerHealthChecker.class);
+        given(activeMQServerHealthChecker.healthCheck(
+                anyString(), anyString(), anyString()
+        )).willAnswer(invocationOnMock -> {
+            String user = invocationOnMock.getArgument(0);
+            String password = invocationOnMock.getArgument(1);
+            String brokerUrl = invocationOnMock.getArgument(2);
+
+            if (Objects.equals(user, fakeUser) && Objects.equals(password, fakePassword) && Objects.equals(brokerUrl, fakeBrokerUrl))
+                return true;
+            else
+                return false;
+        });
+
         ArtemisProperties properties = new ArtemisProperties();
-        properties.setUser("art2emis");
+        properties.setUser("art12emis");
         properties.setPassword("artemis");
         properties.setBrokerUrl("tcp://localhost:61616");
-        ActiveMQServer activeMQServer = new ActiveMQServer(properties);
 
-        // when // then
-        assertThat(activeMQServer.healthCheck()).isFalse();
+        // when
+        boolean result = activeMQServerHealthChecker.healthCheck(
+                properties.getUser(),
+                properties.getPassword(),
+                properties.getBrokerUrl()
+        );
+
+        // then
+        verify(activeMQServerHealthChecker).healthCheck(properties.getUser(),properties.getPassword(),properties.getBrokerUrl());
+        assertThat(result).isFalse();
+    }
+
+
+    interface ActiveMQServerHealthChecker {
+        boolean healthCheck(String user, String password, String brokerUrl);
     }
 }

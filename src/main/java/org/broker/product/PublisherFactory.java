@@ -1,4 +1,4 @@
-package org.broker.product.activemq;
+package org.broker.product;
 
 public interface PublisherFactory {
 }

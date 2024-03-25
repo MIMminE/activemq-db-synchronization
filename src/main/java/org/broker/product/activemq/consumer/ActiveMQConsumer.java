@@ -1,4 +1,4 @@
-package org.broker.product.activemq.consumer.model;
+package org.broker.product.activemq.consumer;
 
 import lombok.Getter;
 import org.broker.model.Consumer;
@@ -16,20 +16,24 @@ public class ActiveMQConsumer implements Consumer {
     private MethodJmsListenerEndpoint endpoint;
     private MessageHandlerMethodFactory handlerMethodFactory;
 
-    public void createActiveMQConsumer(MethodJmsListenerEndpoint endpoint) {
+    public void config(MethodJmsListenerEndpoint endpoint) {
         if(validate(endpoint))
             throw new IllegalArgumentException("endPoint 구성이 잘못됐습니다");
 
         this.endpoint = endpoint;
     }
 
-    public void createActiveMQConsumer(Method listenerMethod, String destinationName) {
+    public void config(Method listenerMethod, String destinationName) {
         this.endpoint = createEndpoint(destinationName, listenerMethod);
     }
 
-    public void createActiveMQConsumer(Method listenerMethod, String destinationName,
-                                       MessageHandlerMethodFactory messageHandlerMethodFactory) {
+    public void config(Method listenerMethod, String destinationName,
+                       MessageHandlerMethodFactory messageHandlerMethodFactory) {
         this.endpoint = createEndpoint(listenerMethod, destinationName, messageHandlerMethodFactory);
+    }
+
+    public static Method getSampleListenMethod() throws NoSuchMethodException {
+        return ActiveMQConsumer.class.getDeclaredMethod("sampleListenMethod");
     }
 
     private boolean validate(MethodJmsListenerEndpoint endpoint) {
@@ -61,5 +65,9 @@ public class ActiveMQConsumer implements Consumer {
         DefaultMessageHandlerMethodFactory methodFactory = new DefaultMessageHandlerMethodFactory();
         methodFactory.afterPropertiesSet();
         return methodFactory;
+    }
+
+    private static void sampleListenMethod(){
+
     }
 }

@@ -1,4 +1,4 @@
-package org.broker.product.activemq;
+package org.broker.product;
 
 import org.broker.model.BrokerServer;
 import org.broker.model.Consumer;
@@ -9,4 +9,5 @@ public interface ConsumerFactory<T extends BrokerServer<?>, C extends Consumer> 
     T createServerInstance();
     List<C> createConsumers();
 
+    void registerConsumer(List<C> consumers);
 }

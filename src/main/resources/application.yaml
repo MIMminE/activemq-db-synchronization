@@ -90,27 +90,35 @@ spring:
   jms:
     pub-sub-domain: true
 
-app:
-  config:
-    activemq:
-      mode: default
-      user: artemis
-      password: artemis
-      broker-url: tcp://localhost:61616
+config:
+  activemq:
+    policy: basic
+    user: artemis
+    password: artemis
+    broker-url: tcp://localhost:61616
 
-  db-sync:
-    job:
-      - table_name: authlog
-        thread_size: 10
-        topic_name: test1
-        interval_millis: 10000
-      #      time_field_name: //
-      #      테이블마다 time_stamp 역할을 수행하는 테이블명이 다르다.
-      #
-      - table_name: testtbl
-        thread_size: 10
-        topic_name: test2
-        interval_millis: 10000
+  consumer:
+    validate:
+      sample:
+        - destination: valid_destination1
+        - destination: valid_destination2
+
+    basic:
+      test: test
+
+#  db-sync:
+#    job:
+#      - table_name: authlog
+#        thread_size: 10
+#        topic_name: test1
+#        interval_millis: 10000
+#      #      time_field_name: //
+#      #      테이블마다 time_stamp 역할을 수행하는 테이블명이 다르다.
+#      #
+#      - table_name: testtbl
+#        thread_size: 10
+#        topic_name: test2
+#        interval_millis: 10000
 
 --- # Prod application.yaml ------------------------------------------------------------------------------------
 
