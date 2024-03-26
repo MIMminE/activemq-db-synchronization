@@ -3,13 +3,12 @@ package org.broker.product.activemq.consumer.policy;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(
-        prefix = "config.activemq"
+        prefix = "app.config.activemq"
 )
 public class ActiveMQConsumerConfig {
     @Getter @Setter
@@ -20,12 +19,4 @@ public class ActiveMQConsumerConfig {
     public String password;
     @Getter @Setter
     public String brokerUrl;
-
-
-    @ConditionalOnProperty(name = "app.config.activemq.policy", havingValue = "basic")
-    public static class BasicProperties {
-        @Getter @Setter
-        public String policy;
-    }
-
 }

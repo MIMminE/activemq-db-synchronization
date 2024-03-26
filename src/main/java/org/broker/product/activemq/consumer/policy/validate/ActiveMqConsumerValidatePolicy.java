@@ -3,6 +3,7 @@ package org.broker.product.activemq.consumer.policy.validate;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
 import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
 
@@ -51,7 +52,7 @@ public class ActiveMqConsumerValidatePolicy implements ActiveMqConsumerPolicy {
     }
 
     @Override
-    public void registerConsumer(List<ActiveMQConsumer> consumers) {
+    public void registerConsumer(List<ActiveMQConsumer> consumers, ActiveMQServer activeMQServer) {
         for (ActiveMQConsumer consumer : consumers) {
             consumerRegistry.put(id++, consumer);
         }

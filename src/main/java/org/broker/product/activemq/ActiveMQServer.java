@@ -13,6 +13,11 @@ public class ActiveMQServer implements BrokerServer <ActiveMQConnectionFactory>{
     private final ArtemisProperties properties;
 
     public ActiveMQServer(ArtemisProperties properties) {
+
+        if (properties.getUser().isBlank() || properties.getPassword().isBlank() || properties.getBrokerUrl().isBlank()){
+            throw new IllegalArgumentException("User, Password, BrokerUrl은 필수값입니다.");
+        }
+
         this.properties = properties;
         this.connectionFactory = createActiveMQConnectionFactory(this.properties);
     }

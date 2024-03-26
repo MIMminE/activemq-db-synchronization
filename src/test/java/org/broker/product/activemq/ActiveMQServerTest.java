@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -15,6 +18,7 @@ import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -50,16 +54,41 @@ class ActiveMQServerTest {
 
     @DisplayName("비정상적인 properties 인스턴스가 들어오면 커넥션 팩토리 생성에 실패한다.")
     @Test
-    void createActiveMQConnectionFactoryFail() {
+    void createActiveMQConnectionFactoryFail1() {
         // given
         ArtemisProperties properties = new ArtemisProperties();
         properties.setUser("testUser");
         properties.setPassword("testPassword");
+        properties.setBrokerUrl("badUrl");
 
         // when // then
         assertThatThrownBy(() -> new ActiveMQServer(properties))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Property가 올바르지 않습니다.");
+    }
+
+    private static Stream<Arguments> provideArtemisPropertiesForCreateTest() {
+        return Stream.of(
+                Arguments.of("testUser", "testPassword", ""),
+                Arguments.of("testUser", "", "testUrl"),
+                Arguments.of("", "testPassword", "testUrl")
+        );
+    }
+
+    @DisplayName("Properties 값중 User, Password, BrokerUrl 중 하나라도 입력되지 않으면 예외를 반환한다.")
+    @ParameterizedTest
+    @MethodSource("provideArtemisPropertiesForCreateTest")
+    void createActiveMQConnectionFactoryFail2(String user, String password, String brokerUrl) {
+        // given
+        ArtemisProperties properties = new ArtemisProperties();
+        properties.setUser(user);
+        properties.setPassword(password);
+        properties.setBrokerUrl(brokerUrl);
+
+        // when // then
+        assertThatThrownBy(() -> new ActiveMQServer(properties))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("User, Password, BrokerUrl은 필수값입니다.");
     }
 
     @DisplayName("서버와 연결이 가능한 상태일 때 True를 반환한다.")
@@ -127,7 +156,7 @@ class ActiveMQServerTest {
         );
 
         // then
-        verify(activeMQServerHealthChecker).healthCheck(properties.getUser(),properties.getPassword(),properties.getBrokerUrl());
+        verify(activeMQServerHealthChecker).healthCheck(properties.getUser(), properties.getPassword(), properties.getBrokerUrl());
         assertThat(result).isFalse();
     }
 

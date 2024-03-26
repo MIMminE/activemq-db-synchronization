@@ -1,11 +1,10 @@
-package org.broker.product.activemq.consumer.policy;
+package org.broker.product.activemq.consumer.policy.validate;
 
-import org.assertj.core.api.Assertions;
+import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
-import org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties;
-import org.broker.product.activemq.consumer.policy.validate.ActiveMqConsumerValidatePolicy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -71,6 +70,7 @@ class ActiveMqConsumerValidatePolicyTest {
     @Test
     void registerConsumer() throws NoSuchMethodException {
         // given
+        ActiveMQServer mockServer = Mockito.mock(ActiveMQServer.class);
         ActiveMQConsumerValidateProperties validateProperties = new ActiveMQConsumerValidateProperties();
         validateProperties.setList(List.of(new Sample("sample1"), new Sample("sample2")));
         ActiveMqConsumerValidatePolicy validatePolicy = new ActiveMqConsumerValidatePolicy(validateProperties);
@@ -91,7 +91,7 @@ class ActiveMqConsumerValidatePolicyTest {
         List<ActiveMQConsumer> consumers = validatePolicy.createConsumer();
 
         // when
-        validatePolicy.registerConsumer(consumers);
+        validatePolicy.registerConsumer(consumers, mockServer);
 
         // then
         assertThat(validatePolicy.getConsumerRegistry()).hasSize(2);

@@ -1,5 +1,6 @@
 package org.broker.product.activemq;
 
+import lombok.Getter;
 import org.broker.product.ConsumerFactory;
 import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
@@ -9,8 +10,9 @@ import java.util.List;
 
 public class ActiveMQConsumerFactory implements ConsumerFactory<ActiveMQServer, ActiveMQConsumer> {
 
+    @Getter
     private ActiveMqConsumerPolicy consumerPolicy;
-    private ActiveMQServer activeMQServer;
+    private final ActiveMQServer activeMQServer;
 
     public ActiveMQConsumerFactory(ActiveMqConsumerPolicy consumerPolicy, ArtemisProperties properties) {
         this.consumerPolicy = consumerPolicy;
@@ -24,12 +26,11 @@ public class ActiveMQConsumerFactory implements ConsumerFactory<ActiveMQServer, 
 
     @Override
     public List<ActiveMQConsumer> createConsumers() {
-        List<ActiveMQConsumer> consumers = consumerPolicy.createConsumer();
-        return consumers;
+        return consumerPolicy.createConsumer();
     }
 
     @Override
     public void registerConsumer(List<ActiveMQConsumer> consumers) {
-        consumerPolicy.registerConsumer(consumers);
+        consumerPolicy.registerConsumer(consumers, activeMQServer);
     }
 }

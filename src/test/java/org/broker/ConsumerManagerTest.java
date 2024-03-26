@@ -1,71 +1,80 @@
 package org.broker;
 
-import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-import org.broker.product.activemq.ActiveMQConsumerFactory;
-import org.broker.product.activemq.ActiveMQServer;
+import org.assertj.core.api.Assertions;
+import org.broker.model.BrokerServer;
+import org.broker.model.Consumer;
 import org.broker.product.ConsumerFactory;
-import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
-import org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties;
-import org.broker.product.activemq.consumer.policy.validate.ActiveMqConsumerValidatePolicy;
-import org.broker.product.activemq.consumer.ActiveMQConsumer;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collection;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties.*;
+import static org.mockito.BDDMockito.*;
 
-@DisplayName("ConsumerManger 기능 테스트")
+@ExtendWith(MockitoExtension.class)
+@DisplayName("ConsumerManger 단위 테스트")
 public class ConsumerManagerTest {
 
-    private ArtemisProperties properties = new ArtemisProperties();
+    @Mock
+    ConsumerFactory<BrokerServer<?>, Consumer> mockConsumerFactory;
 
-    @BeforeEach
-    void setUp() {
-        properties.setBrokerUrl("tcp://localhost:61616");
-        properties.setUser("artemis");
-        properties.setPassword("artemis");
-    }
+    @Mock
+    BrokerServer brokerServer;
 
-    @DisplayName("Validation ConsumerPolicy 기반 ActiveMQ Broker 서버 객체 생성에 성공한다.")
-    @Test
-    void createServerInstance() {
+
+    @DisplayName("ConsumerManager 시나리오 테스트")
+    @TestFactory
+    Collection<DynamicTest> consumerManagerDynamicTests() {
         // given
-        ActiveMQConsumerValidateProperties validateProperties = new ActiveMQConsumerValidateProperties();
-        validateProperties.setList(List.of(new Sample("sample1"), new Sample("sample2")));
-        ActiveMqConsumerPolicy consumerPolicy = new ActiveMqConsumerValidatePolicy(validateProperties);
-        ConsumerFactory<ActiveMQServer, ActiveMQConsumer> consumerFactory = new ActiveMQConsumerFactory(consumerPolicy, properties);
-        ConsumerManager<ActiveMQServer, ActiveMQConsumer> manager = new ConsumerManager<>(consumerFactory);
+        given(mockConsumerFactory.createServerInstance()).willReturn(brokerServer);
+        given(mockConsumerFactory.createConsumers()).willReturn(
+                List.of(mock(Consumer.class), mock(Consumer.class))
+        );
+        ConsumerManager<BrokerServer<?>, Consumer> consumerManger = new ConsumerManager<>(mockConsumerFactory);
 
-        // when
-        ActiveMQServer activeMQServer = manager.createServerInstance();
+        return List.of(
+                DynamicTest.dynamicTest("createServerInstance 메소드 호출 시 " +
+                        "ConsumerFactory 인스턴스의 Server 생성 메서드가 호출되고 BrokerServer 객체가 반환된다.", () -> {
 
-        // then
-        assertThat(activeMQServer.getConnection()).isInstanceOf(ActiveMQConnectionFactory.class);
-    }
+                    // when
+                    BrokerServer<?> serverInstance = consumerManger.createServerInstance();
 
-    @DisplayName("검증 정책 컨슈머 생성")
-    @Test
-    void createConsumer() {
-        // given
-        ActiveMQConsumerValidateProperties validateProperties = new ActiveMQConsumerValidateProperties();
-        validateProperties.setList(List.of(new Sample("sample1"), new Sample("sample2")));
-        ActiveMqConsumerPolicy consumerPolicy = new ActiveMqConsumerValidatePolicy(validateProperties);
-        ConsumerFactory<ActiveMQServer, ActiveMQConsumer> consumerFactory = new ActiveMQConsumerFactory(consumerPolicy, properties);
-        ConsumerManager<ActiveMQServer, ActiveMQConsumer> manager = new ConsumerManager<>(consumerFactory);
+                    // then
+                    Assertions.assertThat(serverInstance).isInstanceOf(BrokerServer.class);
+                    verify(mockConsumerFactory).createServerInstance();
+                }),
 
-        // when
-        List<ActiveMQConsumer> consumer = manager.createConsumer();
+                DynamicTest.dynamicTest("createConsumer 메소드 호출 시 " +
+                        "ConsumerFactory 인스턴스의 Consumer 생성 메서드가 호출되고 Consumer 리스트가 반환된다.", () -> {
 
-        // then
-    }
+                    // when
+                    List<Consumer> consumers = consumerManger.createConsumer();
 
-    @DisplayName("컨슈머 등록")
-    @Test
-    void registryConsumer() {
+                    // then
+                    Assertions.assertThat(consumers)
+                            .hasSize(2)
+                            .allMatch(consumer -> consumer instanceof Consumer);
+                    verify(mockConsumerFactory).createConsumers();
+                }),
 
+                DynamicTest.dynamicTest("registerConsumer 메소드 호출 시 " +
+                        "ConsumerFactory 인스턴스의 Consumer 등록 메서드가가 호출된다.", () -> {
+
+                    // given
+                    List<Consumer> consumers = consumerManger.createConsumer();
+
+
+                    // when
+                    consumerManger.registerConsumer(consumers);
+
+                    // then
+                    verify(mockConsumerFactory).registerConsumer(consumers);
+                })
+        );
     }
 }

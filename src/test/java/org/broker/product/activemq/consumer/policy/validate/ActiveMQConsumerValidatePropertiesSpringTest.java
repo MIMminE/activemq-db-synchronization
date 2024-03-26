@@ -1,34 +1,27 @@
 package org.broker.product.activemq.consumer.policy.validate;
 
+import org.assertj.core.api.Assertions;
+import org.broker.support.IntegrationConsumerValidateSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties.Sample;
 
-@ActiveProfiles(profiles = "consumer-valid-test")
-@Import(ActiveMQConsumerValidateProperties.class)
-@SpringBootTest
-class ActiveMQConsumerValidatePropertiesSpringTest {
+@DisplayName("스프링 통합 Consumer - Validate Policy 테스트")
+class ActiveMQConsumerValidatePropertiesSpringTest extends IntegrationConsumerValidateSupport {
 
-    @Autowired
-    ActiveMQConsumerValidateProperties properties;
-
-    @DisplayName("테스트")
+    @DisplayName("app.config.activemq.policy 값이 validate 일 경우 application.yaml 설정을 정상적으로 불러온다.")
     @Test
-    void test() {
+    void readProperties() {
         // given
-        List<ActiveMQConsumerValidateProperties.Sample> sample = properties.getSample();
-        for (ActiveMQConsumerValidateProperties.Sample sample1 : sample) {
-            System.out.println("sample1 = " + sample1);
-        }
+        List<Sample> samples = properties.getSample();
 
-        // when
+        // when // then
+        Assertions.assertThat(samples).hasSize(2)
+                .extracting("destination")
+                .contains("valid_destination1", "valid_destination2");
 
-        // then
     }
 }
