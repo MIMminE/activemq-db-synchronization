@@ -22,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 @DisplayName("[Integration] ActiveMQ Consumer Basic Policy")
 class ActiveMqConsumerBasicPolicyTest extends IntegrationConsumerBasicSupport {
-
     @Autowired
     private ActiveMqConsumerBasicPolicy activeMqConsumerBasicPolicy;
+
 
     @Autowired
     private JmsTemplate jmsTemplate;

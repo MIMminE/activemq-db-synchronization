@@ -6,7 +6,6 @@ import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicPr
 import org.broker.product.activemq.consumer.policy.basic.ActiveMqConsumerBasicPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -15,43 +14,41 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles(profiles = "consumer-basic-test")
-@Import({ActiveMQConsumerBasicProperties.class, config.class})
 @SpringBootTest
+@Import(IntegrationConsumerBasicSupport.config.class)
 public abstract class IntegrationConsumerBasicSupport {
 
     @Autowired
     protected ActiveMQConsumerBasicProperties properties;
 
-}
+    static class config {
+        @Bean
+        public ActiveMQServer activeMQServer() {
+            ArtemisProperties artemisProperties = new ArtemisProperties();
+            artemisProperties.setUser("artemis");
+            artemisProperties.setPassword("artemis");
+            artemisProperties.setBrokerUrl("tcp://localhost:61616");
 
-class config {
+            return new ActiveMQServer(artemisProperties);
+        }
 
-    @Bean
-    public ActiveMQServer activeMQServer() {
-        ArtemisProperties artemisProperties = new ArtemisProperties();
-        artemisProperties.setUser("artemis");
-        artemisProperties.setPassword("artemis");
-        artemisProperties.setBrokerUrl("tcp://localhost:61616");
+        @Bean
+        public ActiveMqConsumerBasicPolicy activeMqConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties,
+                                                                       DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory,
+                                                                       ActiveMQServer activeMQServer) {
 
-        return new ActiveMQServer(artemisProperties);
-    }
+            ActiveMQConnectionFactory connectionFactory = activeMQServer.getConnectionFactory();
 
-    @Bean
-    public ActiveMqConsumerBasicPolicy activeMqConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties,
-                                                                   DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory,
-                                                                   ActiveMQServer activeMQServer) {
+            defaultJmsListenerContainerFactory.setPubSubDomain(true);
+            defaultJmsListenerContainerFactory.setConnectionFactory(connectionFactory);
+            return new ActiveMqConsumerBasicPolicy(properties, defaultJmsListenerContainerFactory);
+        }
 
-        ActiveMQConnectionFactory connectionFactory = activeMQServer.getConnectionFactory();
-
-        defaultJmsListenerContainerFactory.setPubSubDomain(true);
-        defaultJmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-        return new ActiveMqConsumerBasicPolicy(properties, defaultJmsListenerContainerFactory);
-    }
-
-    @Bean
-    public JmsTemplate jmsTemplate(ActiveMQServer activeMQServer) {
-        JmsTemplate jmsTemplate = new JmsTemplate(activeMQServer.getConnectionFactory());
-        jmsTemplate.setPubSubDomain(true);
-        return jmsTemplate;
+        @Bean
+        public JmsTemplate jmsTemplate(ActiveMQServer activeMQServer) {
+            JmsTemplate jmsTemplate = new JmsTemplate(activeMQServer.getConnectionFactory());
+            jmsTemplate.setPubSubDomain(true);
+            return jmsTemplate;
+        }
     }
 }

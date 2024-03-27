@@ -3,7 +3,6 @@ package org.mq.infra.message.activeMq.publisher.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-import org.mq.config.SystemConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.jms.core.JmsTemplate;
 
 @RequiredArgsConstructor
 @Configuration
-@Conditional(SystemConfig.class)
 @ConditionalOnProperty(name = "system.config.activemq.enabled", havingValue = "true")
 public class PublisherConfig {
 

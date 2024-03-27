@@ -3,7 +3,6 @@ package org.mq.infra.message.activeMq.publisher.register;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.mq.exception.PublisherSendException;
 import org.mq.infra.message.activeMq.publisher.ActiveMqPublisherRegister;
 import org.mq.infra.message.activeMq.publisher.config.PublisherConfig;
 import org.mq.infra.message.activeMq.publisher.mapper.SqlMapper;
