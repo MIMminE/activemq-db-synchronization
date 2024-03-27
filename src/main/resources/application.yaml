@@ -106,20 +106,6 @@ config:
     basic:
       test: test
 
-#  db-sync:
-#    job:
-#      - table_name: authlog
-#        thread_size: 10
-#        topic_name: test1
-#        interval_millis: 10000
-#      #      time_field_name: //
-#      #      테이블마다 time_stamp 역할을 수행하는 테이블명이 다르다.
-#      #
-#      - table_name: testtbl
-#        thread_size: 10
-#        topic_name: test2
-#        interval_millis: 10000
-
 --- # Prod application.yaml ------------------------------------------------------------------------------------
 
 spring:
