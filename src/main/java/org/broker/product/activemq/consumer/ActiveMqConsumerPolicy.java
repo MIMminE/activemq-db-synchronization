@@ -8,5 +8,5 @@ import java.util.List;
 public interface ActiveMqConsumerPolicy extends ConsumerPolicy {
     List<ActiveMQConsumer> createConsumer();
 
-    void registerConsumer(List<ActiveMQConsumer> consumers, ActiveMQServer activeMQServer);
+    void registerConsumer(List<ActiveMQConsumer> consumers);
 }

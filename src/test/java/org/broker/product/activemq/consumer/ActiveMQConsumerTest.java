@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("ActiveMQConsumer Model 기능 테스트")
+@DisplayName("[Unit] ActiveMQConsumer")
 class ActiveMQConsumerTest {
 
     public void testMethod() {
@@ -72,7 +72,7 @@ class ActiveMQConsumerTest {
         ActiveMQConsumer activeMQConsumer = new ActiveMQConsumer();
 
         // when
-        activeMQConsumer.config(method, destination);
+        activeMQConsumer.config(this, method, destination);
 
         // then
 
@@ -97,7 +97,7 @@ class ActiveMQConsumerTest {
         messageHandlerMethodFactory.setMessageConverter(new MapMessageConverter());
 
         // when
-        activeMQConsumer.config(method, destination, messageHandlerMethodFactory);
+        activeMQConsumer.config(this,method, destination, messageHandlerMethodFactory);
 
         // then
         assertThat(activeMQConsumer.getHandlerMethodFactory()).isEqualTo(messageHandlerMethodFactory);

@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties.Sample;
 
-@DisplayName("스프링 통합 Consumer - Validate Policy 테스트")
+@DisplayName("[Integration] ActiveMQ Consumer Validate Properties")
 class ActiveMQConsumerValidatePropertiesSpringTest extends IntegrationConsumerValidateSupport {
 
     @DisplayName("app.config.activemq.policy 값이 validate 일 경우 application.yaml 설정을 정상적으로 불러온다.")

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("ActiveMQConsumer Factory 단위 테스트")
+@DisplayName("[Unit] ActiveMQConsumerFactory")
 class ActiveMQConsumerFactoryTest {
 
     static Stream<ActiveMqConsumerPolicy> activeMQConsumerPolicyProvider() {
@@ -111,7 +111,7 @@ class ActiveMQConsumerFactoryTest {
         factory.registerConsumer(consumers);
 
         // then
-        verify(mockPolicy).registerConsumer(consumers, factory.createServerInstance());
+        verify(mockPolicy).registerConsumer(consumers);
     }
 
 

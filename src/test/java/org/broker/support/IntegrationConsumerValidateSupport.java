@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles(profiles = "consumer-valid-test")
-@Import(ActiveMQConsumerValidateProperties.class)
+//@Import(ActiveMQConsumerValidateProperties.class)
 @SpringBootTest
 public abstract class IntegrationConsumerValidateSupport {
 

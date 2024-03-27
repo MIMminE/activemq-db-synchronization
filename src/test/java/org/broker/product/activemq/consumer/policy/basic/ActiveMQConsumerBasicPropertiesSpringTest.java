@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicProperties.*;
 
-@DisplayName("스프링 통합 Consumer - Basic Policy 테스트")
+@DisplayName("[Integration] ActiveMQ Consumer Basic Properties")
 public class ActiveMQConsumerBasicPropertiesSpringTest extends IntegrationConsumerBasicSupport {
 
     @DisplayName("app.config.activemq.policy 값이 basic 일 경우 application.yaml 설정을 정상적으로 불러온다.")

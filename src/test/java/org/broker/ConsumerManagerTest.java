@@ -17,7 +17,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("ConsumerManger 단위 테스트")
+@DisplayName("[Unit] ConsumerManager")
 public class ConsumerManagerTest {
 
     @Mock
@@ -26,8 +26,6 @@ public class ConsumerManagerTest {
     @Mock
     BrokerServer brokerServer;
 
-
-    @DisplayName("ConsumerManager 시나리오 테스트")
     @TestFactory
     Collection<DynamicTest> consumerManagerDynamicTests() {
         // given
@@ -63,7 +61,7 @@ public class ConsumerManagerTest {
                 }),
 
                 DynamicTest.dynamicTest("registerConsumer 메소드 호출 시 " +
-                        "ConsumerFactory 인스턴스의 Consumer 등록 메서드가가 호출된다.", () -> {
+                        "ConsumerFactory 인스턴스의 Consumer 등록 메서드가 호출된다.", () -> {
 
                     // given
                     List<Consumer> consumers = consumerManger.createConsumer();

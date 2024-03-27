@@ -23,13 +23,13 @@ public class ActiveMQConsumer implements Consumer {
         this.endpoint = endpoint;
     }
 
-    public void config(Method listenerMethod, String destinationName) {
-        this.endpoint = createEndpoint(destinationName, listenerMethod);
+    public void config(Object been, Method listenerMethod, String destinationName) {
+        this.endpoint = createEndpoint(destinationName, listenerMethod, been);
     }
 
-    public void config(Method listenerMethod, String destinationName,
+    public void config(Object been, Method listenerMethod, String destinationName,
                        MessageHandlerMethodFactory messageHandlerMethodFactory) {
-        this.endpoint = createEndpoint(listenerMethod, destinationName, messageHandlerMethodFactory);
+        this.endpoint = createEndpoint(been,listenerMethod, destinationName, messageHandlerMethodFactory);
     }
 
     public static Method getSampleListenMethod() throws NoSuchMethodException {
@@ -40,20 +40,20 @@ public class ActiveMQConsumer implements Consumer {
         return endpoint.getId().isBlank() || endpoint.getBean() == null || endpoint.getMethod() == null || endpoint.getDestination() == null;
     }
 
-    private MethodJmsListenerEndpoint createEndpoint(Method listenerMethod,
+    private MethodJmsListenerEndpoint createEndpoint(Object been,
+                                                     Method listenerMethod,
                                                      String destinationName,
                                                      MessageHandlerMethodFactory messageHandlerMethodFactory) {
-        MethodJmsListenerEndpoint endpoint = createEndpoint(destinationName, listenerMethod);
+        MethodJmsListenerEndpoint endpoint = createEndpoint(destinationName, listenerMethod, been);
         this.handlerMethodFactory = messageHandlerMethodFactory;
         endpoint.setMessageHandlerMethodFactory(messageHandlerMethodFactory);
         return endpoint;
     }
 
-    private MethodJmsListenerEndpoint createEndpoint(String destinationName, Method listenerMethod) {
+    private MethodJmsListenerEndpoint createEndpoint(String destinationName, Method listenerMethod, Object been) {
         MethodJmsListenerEndpoint endpoint = new MethodJmsListenerEndpoint();
-
         endpoint.setId(UUID.randomUUID().toString().substring(4));
-        endpoint.setBean(this);
+        endpoint.setBean(been);
         endpoint.setMethod(listenerMethod);
         endpoint.setDestination(destinationName);
         endpoint.setMessageHandlerMethodFactory(defaultMessageHandler());
@@ -67,7 +67,6 @@ public class ActiveMQConsumer implements Consumer {
         return methodFactory;
     }
 
-    private static void sampleListenMethod(){
-
+    public static void sampleListenMethod(){
     }
 }

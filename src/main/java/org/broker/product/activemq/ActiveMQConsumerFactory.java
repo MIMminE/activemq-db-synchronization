@@ -31,6 +31,6 @@ public class ActiveMQConsumerFactory implements ConsumerFactory<ActiveMQServer, 
 
     @Override
     public void registerConsumer(List<ActiveMQConsumer> consumers) {
-        consumerPolicy.registerConsumer(consumers, activeMQServer);
+        consumerPolicy.registerConsumer(consumers);
     }
 }

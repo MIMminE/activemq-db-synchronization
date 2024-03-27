@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties.*;
 
 
-@DisplayName("ActiveMqConsumerValidatePolicy 컴포넌트 테스트")
+@DisplayName("[Unit] ActiveMQ Consumer - Validate Policy")
 class ActiveMqConsumerValidatePolicyTest {
 
     @DisplayName("ValidatePolicy 정책의 컨슈머 생성 로직이 정상적으로 동작한다. [ 외부 주입 컨슈머를 반환 ]")
@@ -29,11 +29,11 @@ class ActiveMqConsumerValidatePolicyTest {
 
         Method method1 = this.getClass().getMethod("testMethod");
         String destination1 = "testDest1";
-        activeMQConsumer1.config(method1, destination1);
+        activeMQConsumer1.config(this, method1, destination1);
 
         Method method2 = this.getClass().getMethod("testMethod");
         String destination2 = "testDest1";
-        activeMQConsumer2.config(method2, destination2);
+        activeMQConsumer2.config(this,method2, destination2);
 
         validatePolicy.injectConsumer(activeMQConsumer1);
         validatePolicy.injectConsumer(activeMQConsumer2);
@@ -70,7 +70,6 @@ class ActiveMqConsumerValidatePolicyTest {
     @Test
     void registerConsumer() throws NoSuchMethodException {
         // given
-        ActiveMQServer mockServer = Mockito.mock(ActiveMQServer.class);
         ActiveMQConsumerValidateProperties validateProperties = new ActiveMQConsumerValidateProperties();
         validateProperties.setList(List.of(new Sample("sample1"), new Sample("sample2")));
         ActiveMqConsumerValidatePolicy validatePolicy = new ActiveMqConsumerValidatePolicy(validateProperties);
@@ -79,11 +78,11 @@ class ActiveMqConsumerValidatePolicyTest {
 
         Method method1 = this.getClass().getMethod("testMethod");
         String destination1 = "testDest1";
-        activeMQConsumer1.config(method1, destination1);
+        activeMQConsumer1.config(this, method1, destination1);
 
         Method method2 = this.getClass().getMethod("testMethod");
         String destination2 = "testDest1";
-        activeMQConsumer2.config(method2, destination2);
+        activeMQConsumer2.config(this, method2, destination2);
 
         validatePolicy.injectConsumer(activeMQConsumer1);
         validatePolicy.injectConsumer(activeMQConsumer2);
@@ -91,7 +90,7 @@ class ActiveMqConsumerValidatePolicyTest {
         List<ActiveMQConsumer> consumers = validatePolicy.createConsumer();
 
         // when
-        validatePolicy.registerConsumer(consumers, mockServer);
+        validatePolicy.registerConsumer(consumers);
 
         // then
         assertThat(validatePolicy.getConsumerRegistry()).hasSize(2);
@@ -101,6 +100,7 @@ class ActiveMqConsumerValidatePolicyTest {
     }
 
     public void testMethod() {
+        System.out.println("test!!");
     }
 }
 

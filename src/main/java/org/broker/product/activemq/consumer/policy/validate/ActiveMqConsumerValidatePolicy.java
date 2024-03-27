@@ -46,13 +46,13 @@ public class ActiveMqConsumerValidatePolicy implements ActiveMqConsumerPolicy {
 
         for (Sample sample : properties.getSample()) {
             ActiveMQConsumer activeMQConsumer = new ActiveMQConsumer();
-            activeMQConsumer.config(ActiveMQConsumer.getSampleListenMethod(), sample.destination);
+            activeMQConsumer.config(ActiveMQConsumer.class,ActiveMQConsumer.getSampleListenMethod(), sample.destination);
             consumers.add(activeMQConsumer);
         }
     }
 
     @Override
-    public void registerConsumer(List<ActiveMQConsumer> consumers, ActiveMQServer activeMQServer) {
+    public void registerConsumer(List<ActiveMQConsumer> consumers) {
         for (ActiveMQConsumer consumer : consumers) {
             consumerRegistry.put(id++, consumer);
         }
