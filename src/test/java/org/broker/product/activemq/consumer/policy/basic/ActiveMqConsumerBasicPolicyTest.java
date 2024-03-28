@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("[Integration] ActiveMQ Consumer Basic Policy")
 class ActiveMqConsumerBasicPolicyTest extends IntegrationConsumerBasicSupport {
     @Autowired
-    private ActiveMqConsumerBasicPolicy activeMqConsumerBasicPolicy;
+    private ActiveMQConsumerBasicPolicy activeMqConsumerBasicPolicy;
 
 
     @Autowired

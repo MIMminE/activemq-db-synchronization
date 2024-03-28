@@ -3,7 +3,7 @@ package org.broker.support;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicProperties;
-import org.broker.product.activemq.consumer.policy.basic.ActiveMqConsumerBasicPolicy;
+import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +33,7 @@ public abstract class IntegrationConsumerBasicSupport {
         }
 
         @Bean
-        public ActiveMqConsumerBasicPolicy activeMqConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties,
+        public ActiveMQConsumerBasicPolicy activeMqConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties,
                                                                        DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory,
                                                                        ActiveMQServer activeMQServer) {
 
@@ -41,7 +41,7 @@ public abstract class IntegrationConsumerBasicSupport {
 
             defaultJmsListenerContainerFactory.setPubSubDomain(true);
             defaultJmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-            return new ActiveMqConsumerBasicPolicy(properties, defaultJmsListenerContainerFactory);
+            return new ActiveMQConsumerBasicPolicy(properties, defaultJmsListenerContainerFactory);
         }
 
         @Bean

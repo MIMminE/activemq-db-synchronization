@@ -2,26 +2,18 @@ package org.broker.product.activemq.consumer.policy.basic;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
-import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
+import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
 import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicProperties.SyncInfoProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpointRegistry;
-import org.springframework.jms.listener.MessageListenerContainer;
-import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
-import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Slf4j
 @NoArgsConstructor
-public class ActiveMqConsumerBasicPolicy extends JmsListenerEndpointRegistry implements ActiveMqConsumerPolicy {
+public class ActiveMQConsumerBasicPolicy extends JmsListenerEndpointRegistry implements ActiveMQConsumerPolicy {
 
     private ActiveMQConsumerBasicProperties properties;
 
@@ -30,7 +22,7 @@ public class ActiveMqConsumerBasicPolicy extends JmsListenerEndpointRegistry imp
     CompletableFuture<Map<String, Object>> future;
 
 
-    public ActiveMqConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties, DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory) {
+    public ActiveMQConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties, DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory) {
         this.defaultJmsListenerContainerFactory = defaultJmsListenerContainerFactory;
         this.properties = properties;
     }
@@ -68,7 +60,7 @@ public class ActiveMqConsumerBasicPolicy extends JmsListenerEndpointRegistry imp
                 activeMQConsumer.config(
                         this,
                         this.getClass().getMethod("listenMethod", Map.class)
-                        , syncInfoProperties.topicName);
+                        , syncInfoProperties.topic);
                 consumers.add(activeMQConsumer);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Listener 메서드를 찾지 못했습니다.", e);

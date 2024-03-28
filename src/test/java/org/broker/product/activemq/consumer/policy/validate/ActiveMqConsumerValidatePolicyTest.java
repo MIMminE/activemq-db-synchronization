@@ -1,10 +1,8 @@
 package org.broker.product.activemq.consumer.policy.validate;
 
-import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -23,7 +21,7 @@ class ActiveMqConsumerValidatePolicyTest {
         ActiveMQConsumerValidateProperties validateProperties = new ActiveMQConsumerValidateProperties();
         validateProperties.setList(List.of(new Sample("sample1"), new Sample("sample2")));
 
-        ActiveMqConsumerValidatePolicy validatePolicy = new ActiveMqConsumerValidatePolicy(validateProperties);
+        ActiveMQConsumerValidatePolicy validatePolicy = new ActiveMQConsumerValidatePolicy(validateProperties);
         ActiveMQConsumer activeMQConsumer1 = new ActiveMQConsumer();
         ActiveMQConsumer activeMQConsumer2 = new ActiveMQConsumer();
 
@@ -53,7 +51,7 @@ class ActiveMqConsumerValidatePolicyTest {
         // given
         ActiveMQConsumerValidateProperties validateProperties = new ActiveMQConsumerValidateProperties();
         validateProperties.setList(List.of(new Sample("sample1"), new Sample("sample2")));
-        ActiveMqConsumerValidatePolicy validatePolicy = new ActiveMqConsumerValidatePolicy(validateProperties);
+        ActiveMQConsumerValidatePolicy validatePolicy = new ActiveMQConsumerValidatePolicy(validateProperties);
 
         // when
         List<ActiveMQConsumer> consumers = validatePolicy.createConsumer();
@@ -72,7 +70,7 @@ class ActiveMqConsumerValidatePolicyTest {
         // given
         ActiveMQConsumerValidateProperties validateProperties = new ActiveMQConsumerValidateProperties();
         validateProperties.setList(List.of(new Sample("sample1"), new Sample("sample2")));
-        ActiveMqConsumerValidatePolicy validatePolicy = new ActiveMqConsumerValidatePolicy(validateProperties);
+        ActiveMQConsumerValidatePolicy validatePolicy = new ActiveMQConsumerValidatePolicy(validateProperties);
         ActiveMQConsumer activeMQConsumer1 = new ActiveMQConsumer();
         ActiveMQConsumer activeMQConsumer2 = new ActiveMQConsumer();
 

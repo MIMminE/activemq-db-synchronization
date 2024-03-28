@@ -8,8 +8,8 @@ import java.util.List;
 public interface PublisherFactory<T extends BrokerServer<?>, P extends Publisher> {
     T createServerInstance();
 
-    List<P> createPublisher();
+    List<P> createPublishers();
 
-    void registerPublisher(List<P> publishers);
+    void registerPublishers(List<P> publishers);
 
 }

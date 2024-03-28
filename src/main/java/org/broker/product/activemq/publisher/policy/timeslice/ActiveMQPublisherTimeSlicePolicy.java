@@ -1,11 +1,11 @@
-package org.broker.product.activemq.publisher.policy;
+package org.broker.product.activemq.publisher.policy.timeslice;
 
 import org.broker.product.activemq.publisher.ActiveMQPublisher;
-import org.broker.product.activemq.publisher.ActiveMqPublisherPolicy;
+import org.broker.product.activemq.publisher.ActiveMQPublisherPolicy;
 
 import java.util.List;
 
-public class ActiveMqPublisherTimeSlicePolicy implements ActiveMqPublisherPolicy {
+public class ActiveMQPublisherTimeSlicePolicy implements ActiveMQPublisherPolicy {
     @Override
     public List<ActiveMQPublisher> createPublisher() {
         return null;

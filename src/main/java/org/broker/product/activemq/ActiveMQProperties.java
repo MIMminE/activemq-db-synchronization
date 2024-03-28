@@ -1,4 +1,4 @@
-package org.broker.product.activemq.consumer.policy;
+package org.broker.product.activemq;
 
 
 import lombok.Getter;
@@ -10,13 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(
         prefix = "app.config.activemq"
 )
-public class ActiveMQConsumerConfig {
-    @Getter @Setter
-    public String policy;
-    @Getter @Setter
+@Getter @Setter
+public class ActiveMQProperties {
     public String user;
-    @Getter @Setter
     public String password;
-    @Getter @Setter
     public String brokerUrl;
 }
+

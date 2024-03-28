@@ -2,7 +2,7 @@ package org.broker.product.activemq;
 
 import lombok.Getter;
 import org.broker.product.ConsumerFactory;
-import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
+import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
 
@@ -11,10 +11,10 @@ import java.util.List;
 public class ActiveMQConsumerFactory implements ConsumerFactory<ActiveMQServer, ActiveMQConsumer> {
 
     @Getter
-    private ActiveMqConsumerPolicy consumerPolicy;
+    private ActiveMQConsumerPolicy consumerPolicy;
     private final ActiveMQServer activeMQServer;
 
-    public ActiveMQConsumerFactory(ActiveMqConsumerPolicy consumerPolicy, ArtemisProperties properties) {
+    public ActiveMQConsumerFactory(ActiveMQConsumerPolicy consumerPolicy, ArtemisProperties properties) {
         this.consumerPolicy = consumerPolicy;
         this.activeMQServer = new ActiveMQServer(properties);
     }

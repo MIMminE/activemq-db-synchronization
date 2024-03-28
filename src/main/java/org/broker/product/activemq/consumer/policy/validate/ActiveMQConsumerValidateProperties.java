@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-@ConditionalOnProperty(name = "app.config.activemq.policy", havingValue = "validate")
-@ConfigurationProperties(prefix = "app.config.validate")
+@ConfigurationProperties(prefix = "app.config.activemq.consumer.validate")
 @Data
 public class ActiveMQConsumerValidateProperties {
     private List<Sample> sample;

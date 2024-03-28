@@ -2,10 +2,10 @@ package org.broker.product.activemq;
 
 import org.assertj.core.api.Assertions;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
-import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
-import org.broker.product.activemq.consumer.policy.basic.ActiveMqConsumerBasicPolicy;
+import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
+import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicPolicy;
 import org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties;
-import org.broker.product.activemq.consumer.policy.validate.ActiveMqConsumerValidatePolicy;
+import org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidatePolicy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,17 +20,17 @@ import static org.mockito.Mockito.verify;
 @DisplayName("[Unit] ActiveMQConsumerFactory")
 class ActiveMQConsumerFactoryTest {
 
-    static Stream<ActiveMqConsumerPolicy> activeMQConsumerPolicyProvider() {
+    static Stream<ActiveMQConsumerPolicy> activeMQConsumerPolicyProvider() {
         return Stream.of(
-                new ActiveMqConsumerBasicPolicy(),
-                new ActiveMqConsumerValidatePolicy(new ActiveMQConsumerValidateProperties())
+                new ActiveMQConsumerBasicPolicy(),
+                new ActiveMQConsumerValidatePolicy(new ActiveMQConsumerValidateProperties())
         );
     }
 
     @DisplayName("Consumer Policy 의존성이 올바르게 주입된다.")
     @MethodSource("activeMQConsumerPolicyProvider")
     @ParameterizedTest
-    void createConsumerByValidate(ActiveMqConsumerPolicy consumerPolicy) {
+    void createConsumerFactory(ActiveMQConsumerPolicy consumerPolicy) {
         // given
         ArtemisProperties properties = new ArtemisProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
@@ -48,7 +48,7 @@ class ActiveMQConsumerFactoryTest {
     @DisplayName("createServerInstance 메서드로 생성된 각 Policy 별 ActiveMQServer 객체를 올바르게 반환한다.")
     @MethodSource("activeMQConsumerPolicyProvider")
     @ParameterizedTest
-    void createServerInstance(ActiveMqConsumerPolicy consumerPolicy) {
+    void createServerInstance(ActiveMQConsumerPolicy consumerPolicy) {
         // given
         ArtemisProperties properties = new ArtemisProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
@@ -66,19 +66,19 @@ class ActiveMQConsumerFactoryTest {
     }
 
 
-    static Stream<Class<? extends ActiveMqConsumerPolicy>> ActiveMqConsumerPolicyClassProvider() {
+    static Stream<Class<? extends ActiveMQConsumerPolicy>> ActiveMqConsumerPolicyClassProvider() {
         return Stream.of(
-                ActiveMqConsumerBasicPolicy.class,
-                ActiveMqConsumerValidatePolicy.class
+                ActiveMQConsumerBasicPolicy.class,
+                ActiveMQConsumerValidatePolicy.class
         );
     }
 
     @DisplayName("createConsumers 메서드로 각 Policy 별 Consumer 생성 로직을 호출한다.")
     @MethodSource("ActiveMqConsumerPolicyClassProvider")
     @ParameterizedTest
-    void createConsumers(Class<? extends ActiveMqConsumerPolicy> policyClass) {
+    void createConsumers(Class<? extends ActiveMQConsumerPolicy> policyClass) {
         // given
-        ActiveMqConsumerPolicy mockPolicy = mock(policyClass);
+        ActiveMQConsumerPolicy mockPolicy = mock(policyClass);
         ArtemisProperties properties = new ArtemisProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
         properties.setUser("artemis");
@@ -96,9 +96,9 @@ class ActiveMQConsumerFactoryTest {
     @DisplayName("registerConsumer 메서드로 각 Policy 별 Consumer 등록 메서드를 호출한다.")
     @MethodSource("ActiveMqConsumerPolicyClassProvider")
     @ParameterizedTest
-    void registerConsumer(Class<? extends ActiveMqConsumerPolicy> policyClass) {
+    void registerConsumer(Class<? extends ActiveMQConsumerPolicy> policyClass) {
         // given
-        ActiveMqConsumerPolicy mockPolicy = mock(policyClass);
+        ActiveMQConsumerPolicy mockPolicy = mock(policyClass);
         ArtemisProperties properties = new ArtemisProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
         properties.setUser("artemis");

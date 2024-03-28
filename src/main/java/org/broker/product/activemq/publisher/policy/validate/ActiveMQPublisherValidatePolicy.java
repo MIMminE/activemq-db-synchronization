@@ -1,11 +1,11 @@
-package org.broker.product.activemq.publisher.policy;
+package org.broker.product.activemq.publisher.policy.validate;
 
 import org.broker.product.activemq.publisher.ActiveMQPublisher;
-import org.broker.product.activemq.publisher.ActiveMqPublisherPolicy;
+import org.broker.product.activemq.publisher.ActiveMQPublisherPolicy;
 
 import java.util.List;
 
-public class ActiveMqPublisherValidatePolicy implements ActiveMqPublisherPolicy {
+public class ActiveMQPublisherValidatePolicy implements ActiveMQPublisherPolicy {
     @Override
     public List<ActiveMQPublisher> createPublisher() {
         return null;

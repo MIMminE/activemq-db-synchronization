@@ -3,9 +3,8 @@ package org.broker.product.activemq.consumer.policy.validate;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
-import org.broker.product.activemq.consumer.ActiveMqConsumerPolicy;
+import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +14,7 @@ import java.util.Map;
 import static org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties.*;
 
 @RequiredArgsConstructor
-public class ActiveMqConsumerValidatePolicy implements ActiveMqConsumerPolicy {
+public class ActiveMQConsumerValidatePolicy implements ActiveMQConsumerPolicy {
 
     private final ActiveMQConsumerValidateProperties properties;
     private List<ActiveMQConsumer> consumers = new ArrayList<>();
