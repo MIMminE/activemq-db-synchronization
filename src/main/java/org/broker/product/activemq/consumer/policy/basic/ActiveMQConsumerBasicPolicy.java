@@ -19,7 +19,7 @@ public class ActiveMQConsumerBasicPolicy extends JmsListenerEndpointRegistry imp
 
     private DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory;
 
-    CompletableFuture<Map<String, Object>> future;
+    private CompletableFuture<Map<String, Object>> future;
 
 
     public ActiveMQConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties, DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory) {
