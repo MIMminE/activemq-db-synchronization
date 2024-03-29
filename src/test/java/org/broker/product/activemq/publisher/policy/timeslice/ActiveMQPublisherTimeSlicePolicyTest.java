@@ -2,35 +2,24 @@ package org.broker.product.activemq.publisher.policy.timeslice;
 
 import com.google.common.collect.ArrayListMultimap;
 import org.broker.product.activemq.publisher.ActiveMQPublisher;
+import org.broker.support.IntegrationPublisherTimeSliceSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.jms.core.JmsTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.broker.product.activemq.publisher.policy.timeslice.ActiveMQPublisherTimeSliceProperties.SyncInfoProperties;
 
 
-@DisplayName("[Unit] ActiveMQPublisherTimeSlicePolicy")
-class ActiveMQPublisherTimeSlicePolicyTest {
+@DisplayName("[Integration] ActiveMQPublisherTimeSlicePolicy")
+class ActiveMQPublisherTimeSlicePolicyTest extends IntegrationPublisherTimeSliceSupport {
 
     @Test
+    @DisplayName("Properties 설정을 기반으로 Publisher 생성에 성공한다.")
     void createPublisher() {
 
         // given
-        JmsTemplate mockJmsTemplate = Mockito.mock(JmsTemplate.class);
-        ActiveMQPublisherTimeSliceProperties properties = new ActiveMQPublisherTimeSliceProperties();
-        properties.setSyncInfo(
-                new ArrayList<>(Arrays.asList(
-                        new SyncInfoProperties("auth_log_tbl", "auth_topic", 7, 300),
-                        new SyncInfoProperties("system_log_tbl", "system_topic", 3, 1000)
-                )));
-
-        ActiveMQPublisherTimeSlicePolicy policy = new ActiveMQPublisherTimeSlicePolicy(properties, mockJmsTemplate);
+        ActiveMQPublisherTimeSlicePolicy policy = new ActiveMQPublisherTimeSlicePolicy(properties, jmsTemplate);
 
         // when
         List<ActiveMQPublisher> publishers = policy.createPublisher();
@@ -41,11 +30,20 @@ class ActiveMQPublisherTimeSlicePolicyTest {
 
         ArrayListMultimap<Integer, Runnable> target2 = (ArrayListMultimap) publishers.get(1).getPolicyMap().get("runnableMap");
         assertThat(target2.keySet().size()).isEqualTo(3);
-
     }
 
     @Test
-    void registerPublisher() {
+    void registerPublisher() throws InterruptedException {
+        // given
+        ActiveMQPublisherTimeSlicePolicy policy = new ActiveMQPublisherTimeSlicePolicy(properties, jmsTemplate);
+        List<ActiveMQPublisher> publisher = policy.createPublisher();
+
+        // when
+        policy.registerPublisher(publisher);
+
+        // then
+        Thread.sleep(50000);
+
 
     }
 }

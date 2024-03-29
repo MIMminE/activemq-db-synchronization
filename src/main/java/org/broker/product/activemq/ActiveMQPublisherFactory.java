@@ -14,7 +14,7 @@ public class ActiveMQPublisherFactory implements PublisherFactory<ActiveMQServer
     private ActiveMQPublisherPolicy publisherPolicy;
     private final ActiveMQServer activeMQServer;
 
-    public ActiveMQPublisherFactory(ActiveMQPublisherPolicy publisherPolicy, ArtemisProperties properties) {
+    public ActiveMQPublisherFactory(ActiveMQPublisherPolicy publisherPolicy, ActiveMQProperties properties) {
         this.publisherPolicy = publisherPolicy;
         this.activeMQServer = new ActiveMQServer(properties);
     }

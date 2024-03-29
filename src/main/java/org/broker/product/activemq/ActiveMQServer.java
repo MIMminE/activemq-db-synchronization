@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
 public class ActiveMQServer implements BrokerServer <ActiveMQConnectionFactory>{
 
     private ActiveMQConnectionFactory connectionFactory;
-    private final ArtemisProperties properties;
+    private final ActiveMQProperties properties;
 
-    public ActiveMQServer(ArtemisProperties properties) {
+    public ActiveMQServer(ActiveMQProperties properties) {
 
         if (properties.getUser().isBlank() || properties.getPassword().isBlank() || properties.getBrokerUrl().isBlank()){
             throw new IllegalArgumentException("User, Password, BrokerUrl은 필수값입니다.");
@@ -22,7 +22,7 @@ public class ActiveMQServer implements BrokerServer <ActiveMQConnectionFactory>{
         this.connectionFactory = createActiveMQConnectionFactory(this.properties);
     }
 
-    private ActiveMQConnectionFactory createActiveMQConnectionFactory(ArtemisProperties properties) {
+    private ActiveMQConnectionFactory createActiveMQConnectionFactory(ActiveMQProperties properties) {
         try{
             connectionFactory = new ActiveMQConnectionFactory(properties.getBrokerUrl());
         } catch (RuntimeException e){

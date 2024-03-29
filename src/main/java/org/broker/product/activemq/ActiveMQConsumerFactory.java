@@ -14,7 +14,7 @@ public class ActiveMQConsumerFactory implements ConsumerFactory<ActiveMQServer, 
     private ActiveMQConsumerPolicy consumerPolicy;
     private final ActiveMQServer activeMQServer;
 
-    public ActiveMQConsumerFactory(ActiveMQConsumerPolicy consumerPolicy, ArtemisProperties properties) {
+    public ActiveMQConsumerFactory(ActiveMQConsumerPolicy consumerPolicy, ActiveMQProperties properties) {
         this.consumerPolicy = consumerPolicy;
         this.activeMQServer = new ActiveMQServer(properties);
     }

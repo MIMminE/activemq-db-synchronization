@@ -36,7 +36,7 @@ class ActiveMQServerTest {
     @Test
     void createActiveMQConnectionFactorySuccess() {
         // given
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setUser("testUser");
         properties.setPassword("testPassword");
         properties.setBrokerUrl("tcp://localhost:61616");
@@ -56,7 +56,7 @@ class ActiveMQServerTest {
     @Test
     void createActiveMQConnectionFactoryFail1() {
         // given
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setUser("testUser");
         properties.setPassword("testPassword");
         properties.setBrokerUrl("badUrl");
@@ -80,7 +80,7 @@ class ActiveMQServerTest {
     @MethodSource("provideArtemisPropertiesForCreateTest")
     void createActiveMQConnectionFactoryFail2(String user, String password, String brokerUrl) {
         // given
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setUser(user);
         properties.setPassword(password);
         properties.setBrokerUrl(brokerUrl);
@@ -143,7 +143,7 @@ class ActiveMQServerTest {
                 return false;
         });
 
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setUser("art12emis");
         properties.setPassword("artemis");
         properties.setBrokerUrl("tcp://localhost:61616");

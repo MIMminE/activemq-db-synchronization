@@ -32,7 +32,7 @@ class ActiveMQConsumerFactoryTest {
     @ParameterizedTest
     void createConsumerFactory(ActiveMQConsumerPolicy consumerPolicy) {
         // given
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
         properties.setUser("artemis");
         properties.setPassword("artemis");
@@ -50,7 +50,7 @@ class ActiveMQConsumerFactoryTest {
     @ParameterizedTest
     void createServerInstance(ActiveMQConsumerPolicy consumerPolicy) {
         // given
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
         properties.setUser("artemis");
         properties.setPassword("artemis");
@@ -79,7 +79,7 @@ class ActiveMQConsumerFactoryTest {
     void createConsumers(Class<? extends ActiveMQConsumerPolicy> policyClass) {
         // given
         ActiveMQConsumerPolicy mockPolicy = mock(policyClass);
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
         properties.setUser("artemis");
         properties.setPassword("artemis");
@@ -99,7 +99,7 @@ class ActiveMQConsumerFactoryTest {
     void registerConsumer(Class<? extends ActiveMQConsumerPolicy> policyClass) {
         // given
         ActiveMQConsumerPolicy mockPolicy = mock(policyClass);
-        ArtemisProperties properties = new ArtemisProperties();
+        ActiveMQProperties properties = new ActiveMQProperties();
         properties.setBrokerUrl("tcp://localhost:61616");
         properties.setUser("artemis");
         properties.setPassword("artemis");

@@ -1,6 +1,7 @@
 package org.broker.support;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.broker.product.activemq.ActiveMQProperties;
 import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicProperties;
 import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicPolicy;
@@ -24,12 +25,12 @@ public abstract class IntegrationConsumerBasicSupport {
     static class config {
         @Bean
         public ActiveMQServer activeMQServer() {
-            ArtemisProperties artemisProperties = new ArtemisProperties();
-            artemisProperties.setUser("artemis");
-            artemisProperties.setPassword("artemis");
-            artemisProperties.setBrokerUrl("tcp://localhost:61616");
+            ActiveMQProperties activeMQProperties = new ActiveMQProperties();
+            activeMQProperties.setUser("artemis");
+            activeMQProperties.setPassword("artemis");
+            activeMQProperties.setBrokerUrl("tcp://localhost:61616");
 
-            return new ActiveMQServer(artemisProperties);
+            return new ActiveMQServer(activeMQProperties);
         }
 
         @Bean
