@@ -1,13 +1,11 @@
 package org.broker.mapper;
 
 import org.assertj.core.api.Assertions;
-import org.jgroups.util.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,10 +20,25 @@ import java.util.stream.Stream;
 @ActiveProfiles("h2-db-test")
 @SpringBootTest
 @Transactional
+@DisplayName("[Integration] QueryMapper")
 class QueryMapperTest {
 
     @Autowired
     private QueryMapper queryMapper;
+
+    @DisplayName("selectById 메서드로 각 테이블의 고유 id의 데이터를 가져오는 것에 성공한다.")
+    @Test
+    void selectById() {
+
+        // when
+        Map<String, Object> result = queryMapper.selectById("authlog", 1L);
+
+        // then
+        Assertions.assertThat(result)
+                .extracting("CLI_IP", "ID_FLAG","SYNC_FLAG")
+                .contains("test-ip-1", 1L ,false);
+    }
+
 
     private static Stream<Arguments> provideParam() {
         return Stream.of(
@@ -48,7 +61,7 @@ class QueryMapperTest {
     void selectTableBySyncCondition(int modIndex, int expected) {
         // when
         List<Map<String, Object>> result = queryMapper.selectTableBySyncCondition("authlog", modIndex);
-
+        System.out.println(result);
         // then
         Assertions.assertThat(result).hasSize(expected);
         result.stream()
@@ -59,5 +72,27 @@ class QueryMapperTest {
                     Assertions.assertThat(second).isEqualTo(modIndex);
                 });
 
+    }
+
+
+    @DisplayName("updateTableSyncCondition 메서드로 sync_flag 값을 업데이트한다.")
+    @Test
+    void updateTableSyncCondition() {
+
+        // given
+        Map<String, Object> beforeUpdate = queryMapper.selectById("authlog", 1L);
+
+
+        // when
+        queryMapper.updateTableSyncCondition("authlog", 1L);
+        Map<String, Object> afterUpdate = queryMapper.selectById("authlog", 1L);
+
+        // then
+        Assertions.assertThat(afterUpdate.get("SYNC_FLAG"))
+                .isNotEqualTo(beforeUpdate.get("SYNC_FLAG"));
+
+        Assertions.assertThat(afterUpdate)
+                .extracting("ID_FLAG","SYNC_FLAG")
+                .contains(1L ,true);
     }
 }

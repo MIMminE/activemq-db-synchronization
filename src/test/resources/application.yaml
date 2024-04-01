@@ -67,6 +67,12 @@ spring:
     activate:
       on-profile: publisher-time-slice-test
 
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
 app:
   config:
     activemq:
@@ -80,11 +86,14 @@ app:
             - source_table: auth_log_tbl
               topic: auth_topic
               thread_size: 7
-              interval_millis: 300
+              interval_millis: 2000
             - source_table: system_log_tbl
               topic: system_topic
               thread_size: 3
               interval_millis: 1000
+logging:
+  level:
+    org.broker: info
 
 --- # h2-db-test ------------------------------------------------------------------------------------
 
