@@ -1,110 +1,8 @@
-#spring:
-#  profiles:
-#    active: @spring.profiles.active@
-#
-
 spring:
   application:
     name: DataBase Sync Application
   profiles:
-    default: dev
-
---- # Dev application.yaml ------------------------------------------------------------------------------------
-
-spring:
-  config:
-    activate:
-      on-profile: dev
-
-  datasource:
-    url: jdbc:h2:mem:~/dbSyncApplication
-    driver-class-name: org.h2.Driver
-    username: sa
-    hikari:
-      maximum-pool-size: 10
-
-  sql:
-    init:
-      mode: always
-      schema-locations: schema.sql
-
-  artemis:
-    user: artemis
-    password: artemis
-    broker-url: tcp://localhost:61616
-
-  jms:
-    pub-sub-domain: true
-
-logging:
-  level:
-    org.springframework.jms.listener: debug
-    org.springframework.beans: debug
-
-app:
-  config:
-    activemq:
-      mode: default
-      user: artemis
-      password: artemis
-      broker-url: tcp://localhost:61616
-
-  db-sync:
-    job:
-      - table_name: authlog
-        thread_size: 10
-        topic_name: test1
-        interval_millis: 10000
-      #      time_field_name: //
-      #      테이블마다 time_stamp 역할을 수행하는 테이블명이 다르다.
-      #
-      - table_name: testtbl
-        thread_size: 10
-        topic_name: test2
-        interval_millis: 10000
-
---- # Test application.yaml ------------------------------------------------------------------------------------
-
-spring:
-  config:
-    activate:
-      on-profile: test
-
-  datasource:
-    url: jdbc:h2:mem:~/dbSyncApplication
-    driver-class-name: org.h2.Driver
-    username: sa
-    hikari:
-      maximum-pool-size: 10
-
-  sql:
-    init:
-      mode: always
-      schema-locations: schema.sql
-
-  artemis:
-    user: artemis
-    password: artemis
-    broker-url: tcp://localhost:61616
-
-  jms:
-    pub-sub-domain: true
-
-config:
-  activemq:
-    policy: basic
-    user: artemis
-    password: artemis
-    broker-url: tcp://localhost:61616
-
-  consumer:
-    validate:
-      sample:
-        - destination: valid_destination1
-        - destination: valid_destination2
-
-    basic:
-      test: test
+    default: prod
 
 --- # Prod application.yaml ------------------------------------------------------------------------------------
 
@@ -118,3 +16,31 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: admin
+
+app:
+  config:
+    activemq:
+      user: artemis
+      password: artemis
+      broker-url: tcp://localhost:61616
+
+      publisher:
+        timeslice:
+          sync_info:
+            - source_table: auth_log_tbl
+              topic: auth_topic
+              thread_size: 7
+              interval_millis: 2000
+            - source_table: system_log_tbl
+              topic: system_topic
+              thread_size: 3
+              interval_millis: 1000
+
+      consumer:
+        basic:
+          sync_info:
+            - destination_table: auth_log_tbl
+              topic: auth_topic
+
+            - destination_table: system_log_tbl
+              topic: system_topic

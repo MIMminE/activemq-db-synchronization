@@ -31,7 +31,7 @@ class ActiveMqConsumerValidatePolicyTest {
 
         Method method2 = this.getClass().getMethod("testMethod");
         String destination2 = "testDest1";
-        activeMQConsumer2.config(this,method2, destination2);
+        activeMQConsumer2.config(this, method2, destination2);
 
         validatePolicy.injectConsumer(activeMQConsumer1);
         validatePolicy.injectConsumer(activeMQConsumer2);

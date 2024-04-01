@@ -40,11 +40,6 @@ class ActiveMQPublisherTimeSlicePolicyTest extends IntegrationPublisherTimeSlice
 
         // when
         boolean result = policy.registerPublisher(publisher);
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
         // then
         assertThat(result).isTrue();

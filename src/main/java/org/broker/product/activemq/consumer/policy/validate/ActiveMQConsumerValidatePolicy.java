@@ -32,20 +32,20 @@ public class ActiveMQConsumerValidatePolicy implements ActiveMQConsumerPolicy {
     @Override
     public List<ActiveMQConsumer> createConsumer() {
         if (consumers.isEmpty()) {
-            try {
-                createSampleConsumers();
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("ActiveMQConsumerValidate Sample 생성 중 오류가 발생했습니다. 잘못된 Property 가 사용되었습니다.", e);
-            }
+            createSampleConsumers();
         }
         return consumers;
     }
 
-    private void createSampleConsumers() throws NoSuchMethodException {
+    private void createSampleConsumers(){
 
         for (Sample sample : properties.getSample()) {
             ActiveMQConsumer activeMQConsumer = new ActiveMQConsumer();
-            activeMQConsumer.config(ActiveMQConsumer.class,ActiveMQConsumer.getSampleListenMethod(), sample.destination);
+            try {
+                activeMQConsumer.config(ActiveMQConsumer.class,ActiveMQConsumer.getSampleListenMethod(), sample.destination);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException("컨슈머 생성에 실패했습니다.",e);
+            }
             consumers.add(activeMQConsumer);
         }
     }

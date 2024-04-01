@@ -22,7 +22,7 @@ class ActiveMQPublisherTimeSlicePropertiesTest extends IntegrationPublisherTimeS
         Assertions.assertThat(syncInfo).hasSize(2)
                 .extracting("sourceTable", "topic", "threadSize", "intervalMillis")
                 .contains(
-                        Tuple.tuple("auth_log_tbl", "auth_topic", 7, 300),
+                        Tuple.tuple("auth_log_tbl", "auth_topic", 7, 2000),
                         Tuple.tuple("system_log_tbl", "system_topic", 3, 1000)
                 );
     }

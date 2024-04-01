@@ -16,14 +16,14 @@ public class PublisherManager<T extends BrokerServer<?>, P extends Publisher> {
     }
 
     public T createServerInstance() {
-        return null;
+        return factory.createServerInstance();
     }
 
     public List<P> createPublisher() {
-        return null;
+        return factory.createPublishers();
     }
 
     public void registerPublisher(List<P> publishers){
-
+        factory.registerPublishers(publishers);
     }
 }

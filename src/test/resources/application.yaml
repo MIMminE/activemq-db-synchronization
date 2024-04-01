@@ -57,7 +57,9 @@ app:
         validate:
           sample:
             - source: valid_source1
+              topic: valid_topic1
             - source: valid_source2
+              topic: valid_topic2
 
 
 --- # publisher-time-slice-test ------------------------------------------------------------------------------------
@@ -103,7 +105,7 @@ spring:
       on-profile: h2-db-test
 
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:test2
     driver-class-name: org.h2.Driver
     username: sa
     password:

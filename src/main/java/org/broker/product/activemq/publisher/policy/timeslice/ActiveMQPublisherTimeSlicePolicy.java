@@ -9,7 +9,6 @@ import org.broker.product.activemq.publisher.ActiveMQPublisherPolicy;
 import org.broker.product.activemq.publisher.policy.timeslice.ActiveMQPublisherTimeSliceProperties.SyncInfoProperties;
 import org.springframework.jms.core.JmsTemplate;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RequiredArgsConstructor
 public class ActiveMQPublisherTimeSlicePolicy implements ActiveMQPublisherPolicy {
-
 
     private final ActiveMQPublisherTimeSliceProperties properties;
     private final JmsTemplate jmsTemplate;

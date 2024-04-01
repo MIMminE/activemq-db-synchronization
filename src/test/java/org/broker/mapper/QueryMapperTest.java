@@ -31,12 +31,12 @@ class QueryMapperTest {
     void selectById() {
 
         // when
-        Map<String, Object> result = queryMapper.selectById("authlog", 1L);
+        Map<String, Object> result = queryMapper.selectById("auth_log_tbl", 1L);
 
         // then
         Assertions.assertThat(result)
-                .extracting("CLI_IP", "ID_FLAG","SYNC_FLAG")
-                .contains("test-ip-1", 1L ,false);
+                .extracting("CLI_IP", "ID_FLAG", "SYNC_FLAG")
+                .contains("test-ip-1", 1L, false);
     }
 
 
@@ -60,7 +60,7 @@ class QueryMapperTest {
     @ParameterizedTest
     void selectTableBySyncCondition(int modIndex, int expected) {
         // when
-        List<Map<String, Object>> result = queryMapper.selectTableBySyncCondition("authlog", modIndex);
+        List<Map<String, Object>> result = queryMapper.selectTableBySyncCondition("auth_log_tbl", modIndex);
         System.out.println(result);
         // then
         Assertions.assertThat(result).hasSize(expected);
@@ -80,19 +80,19 @@ class QueryMapperTest {
     void updateTableSyncCondition() {
 
         // given
-        Map<String, Object> beforeUpdate = queryMapper.selectById("authlog", 1L);
+        Map<String, Object> beforeUpdate = queryMapper.selectById("auth_log_tbl", 1L);
 
 
         // when
-        queryMapper.updateTableSyncCondition("authlog", 1L);
-        Map<String, Object> afterUpdate = queryMapper.selectById("authlog", 1L);
+        queryMapper.updateTableSyncCondition("auth_log_tbl", 1L);
+        Map<String, Object> afterUpdate = queryMapper.selectById("auth_log_tbl", 1L);
 
         // then
         Assertions.assertThat(afterUpdate.get("SYNC_FLAG"))
                 .isNotEqualTo(beforeUpdate.get("SYNC_FLAG"));
 
         Assertions.assertThat(afterUpdate)
-                .extracting("ID_FLAG","SYNC_FLAG")
-                .contains(1L ,true);
+                .extracting("ID_FLAG", "SYNC_FLAG")
+                .contains(1L, true);
     }
 }
