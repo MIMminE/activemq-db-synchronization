@@ -1,7 +1,7 @@
 package org.broker.product.activemq;
 
 import org.assertj.core.api.Assertions;
-import org.broker.model.PublisherPolicy;
+import org.broker.mapper.QueryMapper;
 import org.broker.product.activemq.publisher.ActiveMQPublisher;
 import org.broker.product.activemq.publisher.ActiveMQPublisherPolicy;
 import org.broker.product.activemq.publisher.policy.timeslice.ActiveMQPublisherTimeSlicePolicy;
@@ -11,7 +11,6 @@ import org.broker.product.activemq.publisher.policy.validate.ActiveMQPublisherVa
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.jms.core.JmsTemplate;
 
@@ -25,9 +24,10 @@ class ActiveMQPublisherFactoryTest {
         ActiveMQPublisherTimeSliceProperties mockTimeSliceProperties = Mockito.mock(ActiveMQPublisherTimeSliceProperties.class);
         ActiveMQPublisherValidateProperties mockValidateProperties = Mockito.mock(ActiveMQPublisherValidateProperties.class);
         JmsTemplate mockJmsTemplate = Mockito.mock(JmsTemplate.class);
+        QueryMapper queryMapper = Mockito.mock(QueryMapper.class);
 
         return Stream.of(
-                new ActiveMQPublisherTimeSlicePolicy(mockTimeSliceProperties, mockJmsTemplate),
+                new ActiveMQPublisherTimeSlicePolicy(mockTimeSliceProperties, mockJmsTemplate, queryMapper),
                 new ActiveMQPublisherValidatePolicy(mockValidateProperties)
         );
     }

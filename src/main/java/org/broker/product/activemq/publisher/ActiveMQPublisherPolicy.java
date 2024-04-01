@@ -7,5 +7,5 @@ import java.util.List;
 public interface ActiveMQPublisherPolicy extends PublisherPolicy {
     List<ActiveMQPublisher> createPublisher();
 
-    void registerPublisher(List<ActiveMQPublisher> publishers);
+    boolean registerPublisher(List<ActiveMQPublisher> publishers);
 }

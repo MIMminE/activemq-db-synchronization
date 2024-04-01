@@ -19,7 +19,7 @@ class ActiveMQPublisherTimeSlicePolicyTest extends IntegrationPublisherTimeSlice
     void createPublisher() {
 
         // given
-        ActiveMQPublisherTimeSlicePolicy policy = new ActiveMQPublisherTimeSlicePolicy(properties, jmsTemplate);
+        ActiveMQPublisherTimeSlicePolicy policy = new ActiveMQPublisherTimeSlicePolicy(properties, jmsTemplate, mapper);
 
         // when
         List<ActiveMQPublisher> publishers = policy.createPublisher();
@@ -33,17 +33,20 @@ class ActiveMQPublisherTimeSlicePolicyTest extends IntegrationPublisherTimeSlice
     }
 
     @Test
-    void registerPublisher() throws InterruptedException {
+    void registerPublisher(){
         // given
-        ActiveMQPublisherTimeSlicePolicy policy = new ActiveMQPublisherTimeSlicePolicy(properties, jmsTemplate);
+        ActiveMQPublisherTimeSlicePolicy policy = new ActiveMQPublisherTimeSlicePolicy(properties, jmsTemplate, mapper);
         List<ActiveMQPublisher> publisher = policy.createPublisher();
 
         // when
-        policy.registerPublisher(publisher);
+        boolean result = policy.registerPublisher(publisher);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         // then
-        Thread.sleep(50000);
-
-
+        assertThat(result).isTrue();
     }
 }

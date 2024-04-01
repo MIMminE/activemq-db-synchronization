@@ -1,6 +1,7 @@
 package org.broker.support;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.broker.mapper.QueryMapper;
 import org.broker.product.activemq.ActiveMQProperties;
 import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.publisher.policy.timeslice.ActiveMQPublisherTimeSliceProperties;
@@ -21,6 +22,9 @@ public class IntegrationPublisherTimeSliceSupport {
 
     @Autowired
     protected JmsTemplate jmsTemplate;
+
+    @Autowired
+    protected QueryMapper mapper;
 
     static class config{
         @Bean

@@ -3,23 +3,30 @@ package org.broker.product.activemq.publisher.policy.timeslice;
 import com.google.common.collect.ArrayListMultimap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.broker.mapper.QueryMapper;
 import org.broker.product.activemq.publisher.ActiveMQPublisher;
 import org.broker.product.activemq.publisher.ActiveMQPublisherPolicy;
 import org.broker.product.activemq.publisher.policy.timeslice.ActiveMQPublisherTimeSliceProperties.SyncInfoProperties;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
 public class ActiveMQPublisherTimeSlicePolicy implements ActiveMQPublisherPolicy {
 
+
     private final ActiveMQPublisherTimeSliceProperties properties;
     private final JmsTemplate jmsTemplate;
+    private final QueryMapper mapper;
 
 
     @Override
@@ -48,36 +55,51 @@ public class ActiveMQPublisherTimeSlicePolicy implements ActiveMQPublisherPolicy
                 }
             }
             activeMQPublisher.setPolicyMap("runnableMap", runnableMultiMap);
+            activeMQPublisher.setPolicyMap("threadSize", properties.getThreadSize());
             resultList.add(activeMQPublisher);
         }
         return resultList;
     }
 
-    private Runnable createRunnable(Integer value, SyncInfoProperties properties) {
+    protected Runnable createRunnable(Integer value, SyncInfoProperties properties) {
         return () -> {
-            log.info(properties.getSourceTable() + "DB 조회 :" + value);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            List<Map<String, Object>> selectedMessages = mapper.selectTableBySyncCondition(properties.getSourceTable(), value);
+            for (Map<String, Object> message : selectedMessages) {
+                mapper.updateTableSyncCondition(properties.getSourceTable(), (Long) message.get("ID_FLAG"));
+                Map<String, Object> senderMessage = transferSenderMessage(message);
+                jmsTemplate.convertAndSend(properties.getTopic(), senderMessage);
+                log.info("Send Messages {} , Destination Topic : {}", message, properties.getTopic());
             }
-            jmsTemplate.convertAndSend(properties.getTopic(), "test");
         };
     }
 
+    private Map<String, Object> transferSenderMessage(Map<String, Object> message) {
+        for (String key : message.keySet()) {
+            Object o = message.get(key);
+            message.put(key, o.toString());
+        }
+        message.remove("SYNC_FLAG");
+        message.remove("ID_FLAG");
+        return message;
+    }
+
+
     @Override
-    public void registerPublisher(List<ActiveMQPublisher> publishers) {
+    public boolean registerPublisher(List<ActiveMQPublisher> publishers) {
         for (ActiveMQPublisher publisher : publishers) {
             ArrayListMultimap<Integer, Runnable> runnableMap =
                     (ArrayListMultimap<Integer, Runnable>) publisher.getPolicyMap().get("runnableMap");
+            Integer threadSize = (Integer) publisher.getPolicyMap().get("threadSize");
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            ExecutorService executorService = Executors.newFixedThreadPool(5);
-            scheduler.scheduleAtFixedRate(()->{
+            ExecutorService executorService = Executors.newFixedThreadPool(threadSize);
+            scheduler.scheduleAtFixedRate(() -> {
                 Collection<Runnable> values = runnableMap.values();
                 for (Runnable value : values) {
                     executorService.submit(value);
                 }
-            },0, 3, TimeUnit.SECONDS);
+            }, 0, 3, TimeUnit.SECONDS);
         }
+        return true;
     }
 }
+

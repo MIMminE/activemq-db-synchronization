@@ -17,7 +17,7 @@ public class ActiveMQPublisherValidatePolicy implements ActiveMQPublisherPolicy 
     }
 
     @Override
-    public void registerPublisher(List<ActiveMQPublisher> publishers) {
-
+    public boolean registerPublisher(List<ActiveMQPublisher> publishers) {
+        return false;
     }
 }
