@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS testtbl;
-DROP TABLE IF EXISTS authlog;
 create table auth_log_tbl
 (
     cli_ip     varchar(32)         not null,

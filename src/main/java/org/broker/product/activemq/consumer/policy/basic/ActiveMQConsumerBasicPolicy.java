@@ -1,7 +1,10 @@
 package org.broker.product.activemq.consumer.policy.basic;
 
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.broker.mapper.QueryMapper;
+import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
 import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
 import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicProperties.SyncInfoProperties;
@@ -12,20 +15,16 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @Slf4j
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ActiveMQConsumerBasicPolicy extends JmsListenerEndpointRegistry implements ActiveMQConsumerPolicy {
 
-    private ActiveMQConsumerBasicProperties properties;
+    private final ActiveMQConsumerBasicProperties properties;
 
-    private DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory;
+    private final DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory;
 
     private CompletableFuture<Map<String, Object>> future;
 
-
-    public ActiveMQConsumerBasicPolicy(ActiveMQConsumerBasicProperties properties, DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory) {
-        this.defaultJmsListenerContainerFactory = defaultJmsListenerContainerFactory;
-        this.properties = properties;
-    }
+    private final QueryMapper mapper;
 
     @Override
     public List<ActiveMQConsumer> createConsumer() {
@@ -60,7 +59,7 @@ public class ActiveMQConsumerBasicPolicy extends JmsListenerEndpointRegistry imp
                 activeMQConsumer.config(
                         this,
                         this.getClass().getMethod("listenMethod", Map.class)
-                        , syncInfoProperties.topic);
+                        , syncInfoProperties.getTopic());
                 consumers.add(activeMQConsumer);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Listener 메서드를 찾지 못했습니다.", e);
@@ -74,6 +73,16 @@ public class ActiveMQConsumerBasicPolicy extends JmsListenerEndpointRegistry imp
         if (future!=null){
             future.complete(receive);
         }
-        //TODO
+        String topic = receive.get("topic").toString();
+        receive.remove("topic");
+        List<SyncInfoProperties> syncInfo = properties.getSyncInfo();
+
+        for (SyncInfoProperties syncInfoProperties : syncInfo) {
+
+            if (syncInfoProperties.getTopic().equals(topic) ){
+                mapper.insertTopicMessage(syncInfoProperties.getDestinationTable(), receive);
+                break;
+            }
+        }
     }
 }

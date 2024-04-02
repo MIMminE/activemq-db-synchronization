@@ -1,6 +1,9 @@
 package org.broker.product.activemq.consumer.policy.basic;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +16,9 @@ public class ActiveMQConsumerBasicProperties {
     private List<SyncInfoProperties> syncInfo;
 
     @Data
+    @AllArgsConstructor
     public static class SyncInfoProperties {
-        String destinationTable;
-        String topic;
+        private String destinationTable;
+        private String topic;
     }
 }

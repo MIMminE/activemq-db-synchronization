@@ -39,8 +39,14 @@ app:
       consumer:
         basic:
           sync_info:
-            - destination_table: auth_log_tbl
+            - destination_table: sync_auth_log_tbl
               topic: auth_topic
 
-            - destination_table: system_log_tbl
+            - destination_table: sync_system_log_tbl
               topic: system_topic
+logging:
+  level:
+    org.broker: info
+
+mybatis:
+  mapper-locations: mapper/*.xml

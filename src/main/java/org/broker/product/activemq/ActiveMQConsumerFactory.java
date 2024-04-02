@@ -2,9 +2,8 @@ package org.broker.product.activemq;
 
 import lombok.Getter;
 import org.broker.product.ConsumerFactory;
-import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
-import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
+import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
 
 import java.util.List;
 

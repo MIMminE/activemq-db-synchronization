@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -94,5 +95,21 @@ class QueryMapperTest {
         Assertions.assertThat(afterUpdate)
                 .extracting("ID_FLAG", "SYNC_FLAG")
                 .contains(1L, true);
+    }
+
+    @DisplayName("insertTopicMessage 테스트")
+    @Test
+    void insertTopicMessage() {
+        // given
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("name", "test");
+        maps.put("time_stamp", Timestamp.valueOf("2024-01-12 12:12:12"));
+        maps.put("age", 15);
+
+        queryMapper.insertTopicMessage("system_log_tbl", maps);
+        // when
+        Map<String, Object> stringObjectMap = queryMapper.selectById("system_log_tbl", 6L);
+        System.out.println(stringObjectMap);
+        // then
     }
 }

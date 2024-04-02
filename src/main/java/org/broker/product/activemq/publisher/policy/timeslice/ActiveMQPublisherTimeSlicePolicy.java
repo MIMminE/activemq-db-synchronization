@@ -63,7 +63,8 @@ public class ActiveMQPublisherTimeSlicePolicy implements ActiveMQPublisherPolicy
         return () -> {
             List<Map<String, Object>> selectedMessages = mapper.selectTableBySyncCondition(properties.getSourceTable(), value);
             for (Map<String, Object> message : selectedMessages) {
-                mapper.updateTableSyncCondition(properties.getSourceTable(), (Long) message.get("ID_FLAG"));
+                message.put("topic", properties.getTopic());
+                mapper.updateTableSyncCondition(properties.getSourceTable(), (Long) message.get("id_flag"));
                 Map<String, Object> senderMessage = transferSenderMessage(message);
                 jmsTemplate.convertAndSend(properties.getTopic(), senderMessage);
                 log.info("Send Messages {} , Destination Topic : {}", message, properties.getTopic());
@@ -76,8 +77,8 @@ public class ActiveMQPublisherTimeSlicePolicy implements ActiveMQPublisherPolicy
             Object o = message.get(key);
             message.put(key, o.toString());
         }
-        message.remove("SYNC_FLAG");
-        message.remove("ID_FLAG");
+        message.remove("sync_flag");
+        message.remove("id_flag");
         return message;
     }
 

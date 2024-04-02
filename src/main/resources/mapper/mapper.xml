@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.broker.mapper.QueryMapper">
+    <insert id="insertTopicMessage" parameterType="java.util.Map">
+        INSERT INTO ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <foreach collection="message.keySet()" item="key" separator=",">
+                ${key}
+            </foreach>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <foreach collection="message.keySet()" item="key" separator=",">
+                #{message[${key}]}
+            </foreach>
+        </trim>
+    </insert>
+</mapper>

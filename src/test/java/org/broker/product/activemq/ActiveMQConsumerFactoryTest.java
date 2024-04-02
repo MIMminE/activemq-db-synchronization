@@ -1,15 +1,22 @@
 package org.broker.product.activemq;
 
 import org.assertj.core.api.Assertions;
+import org.broker.mapper.QueryMapper;
 import org.broker.product.activemq.consumer.ActiveMQConsumer;
 import org.broker.product.activemq.consumer.ActiveMQConsumerPolicy;
 import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicPolicy;
+import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicProperties;
 import org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidateProperties;
 import org.broker.product.activemq.consumer.policy.validate.ActiveMQConsumerValidatePolicy;
+import org.broker.product.activemq.publisher.policy.timeslice.ActiveMQPublisherTimeSliceProperties;
+import org.broker.product.activemq.publisher.policy.validate.ActiveMQPublisherValidateProperties;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisProperties;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.core.JmsTemplate;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -21,8 +28,12 @@ import static org.mockito.Mockito.verify;
 class ActiveMQConsumerFactoryTest {
 
     static Stream<ActiveMQConsumerPolicy> activeMQConsumerPolicyProvider() {
+        ActiveMQConsumerBasicProperties mockBasicProperties = Mockito.mock(ActiveMQConsumerBasicProperties.class);
+        DefaultJmsListenerContainerFactory mockJmsContainerFactory = Mockito.mock(DefaultJmsListenerContainerFactory.class);
+        QueryMapper queryMapper = Mockito.mock(QueryMapper.class);
+
         return Stream.of(
-                new ActiveMQConsumerBasicPolicy(),
+                new ActiveMQConsumerBasicPolicy(mockBasicProperties,mockJmsContainerFactory,queryMapper),
                 new ActiveMQConsumerValidatePolicy(new ActiveMQConsumerValidateProperties())
         );
     }

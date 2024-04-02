@@ -1,6 +1,7 @@
 package org.broker.support;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.broker.mapper.QueryMapper;
 import org.broker.product.activemq.ActiveMQProperties;
 import org.broker.product.activemq.ActiveMQServer;
 import org.broker.product.activemq.consumer.policy.basic.ActiveMQConsumerBasicProperties;
@@ -22,7 +23,12 @@ public abstract class IntegrationConsumerBasicSupport {
     @Autowired
     protected ActiveMQConsumerBasicProperties properties;
 
+
     static class config {
+
+        @Autowired
+        protected QueryMapper mapper;
+
         @Bean
         public ActiveMQServer activeMQServer() {
             ActiveMQProperties activeMQProperties = new ActiveMQProperties();
@@ -42,7 +48,7 @@ public abstract class IntegrationConsumerBasicSupport {
 
             defaultJmsListenerContainerFactory.setPubSubDomain(true);
             defaultJmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-            return new ActiveMQConsumerBasicPolicy(properties, defaultJmsListenerContainerFactory);
+            return new ActiveMQConsumerBasicPolicy(properties, defaultJmsListenerContainerFactory, mapper);
         }
 
         @Bean
